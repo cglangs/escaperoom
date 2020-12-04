@@ -45,17 +45,16 @@ export default class Player {
     
     //Find player and move them
     static move(data) {
-        console.log(data)
-        console.log(Player.all)
+   
         var playerID = parseInt(data.id);
         var objPlayer = Player.find(playerID, data.username);
         objPlayer.transform(data.x, data.y, data.z, data.rotation);
     }
     
     //Remove player from world
-    static remove(playerID) {
+    static remove(data) {
         for (var objPlayer of Player.all) {
-            if (objPlayer.id === playerID) {
+            if (objPlayer.id === data.id) {
                 objPlayer.destroy();
                 break;
             }
@@ -63,7 +62,7 @@ export default class Player {
         
         //Remove me from list of all players
         Player.all = Player.all.filter((obj) => {
-            return obj.id !== playerID;
+            return obj.id !== data.id;
         });
     }
     
