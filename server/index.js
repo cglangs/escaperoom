@@ -36,9 +36,6 @@ class Player {
     }  
     
     seeAll() {
-       
-       //this.socket.broadcast.emit(objPlayer.transformJSON()) 
-
         for (var objPlayer of Player.all) {
             if (objPlayer.id !== this.id) {
                 this.socket.emit("transform", {command: "playerMoved", id: objPlayer.id, username: objPlayer.username,  x: objPlayer.x, y: objPlayer.y, z: objPlayer.z, rotation:objPlayer.rotation})
@@ -69,15 +66,8 @@ class Player {
     }   
     
     static remove(socket) {
-        //Tell all other players that we've gone
         var objPlayer = Player.all.find(x => x.socket.id === socket.id);
-        //var json = `{"command":"playerGone","data":${objPlayer.id}}`;
-        //objPlayer.sendToEveryoneElse(json);
         socket.broadcast.emit("transform", {command: "playerGone", id: objPlayer.id})
-
-        //console.log(`${new Date().toLocaleString()} - Player ${objPlayer.id} gone`);
-        
-        //Remove me from list of all players
         Player.all = Player.all.filter((obj) => {
             return obj.socket.id !== socket.id;
         });  
@@ -94,14 +84,12 @@ Player.globalID = 1;
       new Player(socket);
 
   socket.on('login', (data) => {
-    //connectedUsers[userId]= socket.id
     var objPlayer = Player.find(socket.id);
     objPlayer.login(data.username);
   });
 
 
     socket.on('transform', (data) => {
-    //connectedUsers[userId]= socket.id
     var objPlayer = Player.find(socket.id);
     objPlayer.transform(data);
   });
