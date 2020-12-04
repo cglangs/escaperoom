@@ -6,7 +6,6 @@ export default class World {
     static init() {
         World.canvas = document.getElementById("canvas");
         var engine = new Engine(World.canvas, true);
-        console.log(World.canvas)
         
         World.scene = new Scene(engine);
         World.setupCamera();        

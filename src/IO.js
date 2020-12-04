@@ -17,6 +17,7 @@ export default class IO {
             })
 
             IO.socket.on("transform", function(data){
+                console.log(data)
                 switch(data.command) {
                 case "playerGone":
                     Player.remove(data);

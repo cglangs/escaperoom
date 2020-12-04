@@ -38,6 +38,7 @@ class Player {
     seeAll() {
         for (var objPlayer of Player.all) {
             if (objPlayer.id !== this.id) {
+                console.log(objPlayer)
                 this.socket.emit("transform", {command: "playerMoved", id: objPlayer.id, username: objPlayer.username,  x: objPlayer.x, y: objPlayer.y, z: objPlayer.z, rotation:objPlayer.rotation})
             }
         };                      
@@ -67,10 +68,13 @@ class Player {
     
     static remove(socket) {
         var objPlayer = Player.all.find(x => x.socket.id === socket.id);
-        socket.broadcast.emit("transform", {command: "playerGone", id: objPlayer.id})
-        Player.all = Player.all.filter((obj) => {
-            return obj.socket.id !== socket.id;
-        });  
+        if(objPlayer){
+            socket.broadcast.emit("transform", {command: "playerGone", id: objPlayer.id})
+            Player.all = Player.all.filter((obj) => {
+                return obj.socket.id !== socket.id;
+            });  
+        }
+
     }  
    
 }
@@ -81,10 +85,10 @@ Player.globalID = 1;
 
   io.on('connection', (socket) => {
       console.log('a user connected');
-      new Player(socket);
+      //new Player(socket);
 
   socket.on('login', (data) => {
-    var objPlayer = Player.find(socket.id);
+    var objPlayer = new Player(socket);
     objPlayer.login(data.username);
   });
 
