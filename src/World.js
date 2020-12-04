@@ -17,7 +17,6 @@ export default class World {
             World.scene.render();
             Avatar.update();
             World.updateCamera();
-            console.log(World.scene)
         });        
         
         //Resize event

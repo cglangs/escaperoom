@@ -31,8 +31,8 @@ export default class Avatar {
         var x = Avatar.mesh.position.x;
         var y = Avatar.mesh.position.y;
         var z = Avatar.mesh.position.z;
-        var rot = Avatar.absoluteRotation;
-        IO.socket.emit('message', {type: "transform", data: {"x":x,"y":y,"z":z,"rotation":rot}})
+        var rotation = Avatar.absoluteRotation;
+        IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
     static update() {

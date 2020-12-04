@@ -1,4 +1,5 @@
 import Avatar from './Avatar'
+import Player from './Player'
 import Input from './Input'
 import io from "socket.io-client"
 
@@ -14,24 +15,27 @@ export default class IO {
                     Input.init();     
                     Avatar.send();
             })
+
+            IO.socket.on("transform", function(data){
+                switch(data.command) {
+                case "playerGone":
+                    Player.remove(data);
+                    break;
+                case "playerMoved":
+                    Player.move(data);
+                    break;
+                }
+            })
         }
 
      static login (username) {
-           IO.socket.emit('message', {type: "username", data: username}, () => {Avatar.username = username;})
+           IO.socket.emit('login', {username: username}, () => {Avatar.username = username;})
      }
 
 }
 
         /*Socket.ws.onmessage = (msg) => {
             switch(msg.data) {
-                case "auth":
-                if (json.data === "true") {
-                    console.log("Authenticated by server");
-                    Avatar.init();
-                    Input.init();     
-                    Avatar.send();
-                }
-                break;
                 case "playerGone":
                     Player.remove(json.data);
                     break;

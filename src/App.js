@@ -1,6 +1,7 @@
 import React from 'react';
 import IO from './IO'
 import World from './World'
+import Player from './Player'
 import './App.css';
 
 
@@ -16,7 +17,7 @@ export default class App extends React.Component {
 
   componentDidMount(){
     World.init()
-    //Player.init()
+    Player.init()
   }
     
   render(){
