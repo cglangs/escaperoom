@@ -6,12 +6,14 @@ import World from './World'
 
 export default class Avatar {
     
-    static init() {
+    static init(username) {
         Avatar.mesh = MeshBuilder.CreateBox("avatar", {height: Avatar.height, width: 0.1, depth: 0.1}, World.scene);
         Avatar.mesh.position = Vector3.Zero();
         Avatar.mesh.position.y = Avatar.height/2;
         Avatar.mesh.material = new StandardMaterial("matAvatar", World.scene);
         Avatar.mesh.material.diffuseColor = new Color3.Green();
+        Avatar.username = username;
+        console.log(Avatar.username)
         new BillBoard(Avatar.mesh, Avatar.username);
     }   
     

@@ -11,7 +11,7 @@ export default class IO {
             })
 
             IO.socket.on("auth", function(data){
-                    Avatar.init();
+                    Avatar.init(data.username);
                     Input.init();     
                     Avatar.send();
             })
@@ -29,7 +29,7 @@ export default class IO {
         }
 
      static login (username) {
-           IO.socket.emit('login', {username: username}, () => {Avatar.username = username;})
+           IO.socket.emit('login', {username: username})
      }
 
 }

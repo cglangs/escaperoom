@@ -34,6 +34,7 @@ export default class Player {
             }
         };                
         //Player doesn't exist, so lets create a new one
+        console.log(playerID, username)
         return(new Player(playerID, username));
     }
     

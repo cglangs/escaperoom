@@ -54,7 +54,7 @@ class Player {
         this.username = username
         this.authenticated = true;
         console.log(`${new Date().toLocaleString()} - Player ${this.id} authenticaton passed with username ${this.username}`);
-        this.socket.emit("auth",{"data":"true"})
+        this.socket.emit("auth",{username: username})
         clearTimeout(this.authTimer);
         this.seeAll();
 
