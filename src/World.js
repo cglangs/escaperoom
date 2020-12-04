@@ -1,4 +1,5 @@
 import Avatar from './Avatar'
+import Chat from './Chat'
 import {FreeCamera, Vector3, StandardMaterial,HemisphericLight, Texture, MeshBuilder, Engine, Scene} from '@babylonjs/core';
 
 
@@ -6,11 +7,13 @@ export default class World {
     static init() {
         World.canvas = document.getElementById("canvas");
         var engine = new Engine(World.canvas, true);
+
         
         World.scene = new Scene(engine);
         World.setupCamera();        
         World.setupLights();
         World.setupGround();
+        Chat.init()
         
         engine.runRenderLoop(() => {
             World.scene.render();
