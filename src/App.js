@@ -4,21 +4,11 @@ import './App.css';
 import Peer from "simple-peer";
 
 
-
-
-// get video/voice stream
-/*navigator.mediaDevices.getUserMedia({
-  audio: true
-}).then(gotMedia).catch(() => {})*/
-
-
-
 IO.init()
 
 
 const AudioTag = (props) => {
     const ref = useRef();
-    console.log(props)
 
     useEffect(() => {
         props.peer.on("stream", stream => {
@@ -59,7 +49,6 @@ const App = () => {
             })
 
             socketRef.current.on("user joined", payload => {
-                console.log("USER JOINED")
                 const peer = addPeer(payload.signal, payload.callerID, stream);
                 peersRef.current.push({
                     peerID: payload.callerID,
@@ -71,7 +60,6 @@ const App = () => {
 
             socketRef.current.on("receiving returned signal", payload => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
-                console.log("Second signal: ", payload.signal)
                 item.peer.signal(payload.signal);
             });
         })
@@ -87,7 +75,6 @@ const App = () => {
         peer.on("signal", signal => {
             socketRef.current.emit("sending signal", { userToSignal, callerID, signal })
         })
-        console.log("CREATE PEER")
 
         return peer;
     }
@@ -102,7 +89,6 @@ const App = () => {
         peer.on("signal", signal => {
             socketRef.current.emit("returning signal", { signal, callerID })
         })
-        console.log("First signal: ", incomingSignal)
         peer.signal(incomingSignal);
 
         return peer;
