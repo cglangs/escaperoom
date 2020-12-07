@@ -10,15 +10,16 @@ const io = require("socket.io")(http, {
 });
 
 
+
 //Players
 class Player {
     
-    constructor(socket,io) {
+    constructor(socket,roomId) {
         this.authenticated = false;
         this.id = Player.globalID++;
         //this.IPaddress = IPaddress;
         this.socket = socket;
-        this.io = io;
+        this.roomId = roomId
         Player.all.push(this);
         //console.log(`${new Date().toLocaleString()} - Player ${this.id} with IP address ${this.IPaddress} created`);
         
@@ -36,24 +37,25 @@ class Player {
     }  
     
     seeAll() {
+        var otherUsersInThisRoom = []
         for (var objPlayer of Player.all) {
-            if (objPlayer.id !== this.id) {
-                console.log(objPlayer)
+            if (objPlayer.id !== this.id && objPlayer.roomId === this.roomId) {
+                otherUsersInThisRoom.push(objPlayer.socket.id)
                 this.socket.emit("transform", {command: "playerMoved", id: objPlayer.id, username: objPlayer.username,  x: objPlayer.x, y: objPlayer.y, z: objPlayer.z, rotation:objPlayer.rotation})
             }
-        };                      
+        };
+        this.socket.emit("all users", otherUsersInThisRoom)
     }
 
 
-    login(username){
+    login(username,roomId){
           //Player is authenticated
         this.username = username
         this.authenticated = true;
         console.log(`${new Date().toLocaleString()} - Player ${this.id} authenticaton passed with username ${this.username}`);
         this.socket.emit("auth",{username: username})
-        clearTimeout(this.authTimer);
         this.seeAll();
-
+        
     }
     
     transform(transform) {
@@ -61,7 +63,7 @@ class Player {
         this.y = transform.y;
         this.z = transform.z;
         this.rotation = transform.rotation;
-        this.socket.broadcast.emit("transform", {command: "playerMoved", id: this.id, username: this.username, x: this.x, y: this.y, z: this.z, rotation: this.rotation})
+        this.socket.to("1").emit("transform", {command: "playerMoved", id: this.id, username: this.username, x: this.x, y: this.y, z: this.z, rotation: this.rotation})
 
         //this.sendToEveryoneElse(this.transformJSON());
     }   
@@ -69,7 +71,7 @@ class Player {
     static remove(socket) {
         var objPlayer = Player.all.find(x => x.socket.id === socket.id);
         if(objPlayer){
-            socket.broadcast.emit("transform", {command: "playerGone", id: objPlayer.id})
+            socket.to("1").emit("transform", {command: "playerGone", id: objPlayer.id})
             Player.all = Player.all.filter((obj) => {
                 return obj.socket.id !== socket.id;
             });  
@@ -85,20 +87,31 @@ Player.globalID = 1;
 
   io.on('connection', (socket) => {
       console.log('a user connected');
-      //new Player(socket);
 
   socket.on('login', (data) => {
-    var objPlayer = new Player(socket);
+    socket.join("1")
+    var objPlayer = new Player(socket,"1");
     objPlayer.login(data.username);
   });
 
 
-    socket.on('transform', (data) => {
+  socket.on('transform', (data) => {
     var objPlayer = Player.find(socket.id);
     objPlayer.transform(data);
   });
 
-   socket.on('disconnect', () => {
+  socket.on("sending signal", payload => {
+      console.log(payload.userToSignal)
+       io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
+   });
+
+   socket.on("returning signal", payload => {
+       io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
+    });
+
+
+
+  socket.on('disconnect', () => {
     Player.remove(socket)
     console.log('user disconnected');
   });

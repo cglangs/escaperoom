@@ -1,9 +1,8 @@
-import * as GUI from '@babylonjs/gui'
+/*import * as GUI from '@babylonjs/gui'
 
 
 export default class Chat {
 	static init(){
-		this.messages = []
 		this.advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("ChatUI");
         var inputBox =  new GUI.InputText()
         inputBox.width = 0.2;
@@ -16,12 +15,6 @@ export default class Chat {
         this.advancedTexture.addControl(inputBox);
 	}
 
-	/*static sendMessage(messageText) {
 
 
-	}*/
-
-
-
-
-}
+}*/
