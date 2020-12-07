@@ -13,7 +13,6 @@ export default class Avatar {
         Avatar.mesh.material = new StandardMaterial("matAvatar", World.scene);
         Avatar.mesh.material.diffuseColor = new Color3.Green();
         Avatar.username = username;
-        console.log(Avatar.username)
         new BillBoard(Avatar.mesh, Avatar.username);
     }   
     
@@ -37,13 +36,22 @@ export default class Avatar {
         IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
-    static update() {
+    static update(meshes) {
         if (Avatar.mesh !== null) {
             //Moving forward
             if (Input.key.up) {
-		var forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
-		Avatar.mesh.moveWithCollisions(forward);
+
+                let alreadyIntersected
+
+        		const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
+                const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
+
+                Avatar.mesh.moveWithCollisions(forward);
+                if(meshes.some((obj) => obj.intersectsMesh(Avatar.mesh))) {
+                  Avatar.mesh.moveWithCollisions(backward);     
+                }
                 Avatar.send();
+
             }
             //Turning left
             if (Input.key.left) {

@@ -7,6 +7,7 @@ export default class World {
     static init() {
         World.canvas = document.getElementById("canvas");
         var engine = new Engine(World.canvas, true);
+        World.meshes = []
 
         
         World.scene = new Scene(engine);
@@ -18,7 +19,7 @@ export default class World {
 
         engine.runRenderLoop(() => {
             World.scene.render();
-            Avatar.update();
+            Avatar.update(World.meshes);
             World.updateCamera();
         });        
         
@@ -52,17 +53,20 @@ export default class World {
         wall1.material = new StandardMaterial(""); 
         wall1.position = new Vector3(1.5,1,0);
         wall1.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        World.meshes.push(wall1)
         var wall2 = MeshBuilder.CreatePlane("wall2", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.position = new Vector3(0,1,-1.5);
         wall2.material = new StandardMaterial("");
+        World.meshes.push(wall2)
         var wall3 = MeshBuilder.CreatePlane("wall3", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall3.material = new StandardMaterial(""); 
         wall3.position = new Vector3(-1.5,1,0);
         wall3.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        World.meshes.push(wall3)
         var wall4 = MeshBuilder.CreatePlane("wall4", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4.position = new Vector3(0,1,1.5);
         wall4.material = new StandardMaterial("");
-
+        World.meshes.push(wall4)
     }
     
     static setupLights() {
