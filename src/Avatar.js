@@ -13,13 +13,14 @@ export default class Avatar {
         Avatar.mesh = MeshBuilder.CreateBox("avatar", {height: Avatar.height, width: 0.1, depth: 0.1}, World.scene);
         Avatar.mesh.position = Vector3.Zero();
         Avatar.mesh.position.y = Avatar.height/2;
-        Avatar.mesh.material = new StandardMaterial("matAvatar", World.scene);
-        Avatar.mesh.material.diffuseColor = new Color3.Green();
+        Avatar.mesh.isVisible = false
+        //Avatar.mesh.material = new StandardMaterial("matAvatar", World.scene);
+        //Avatar.mesh.material.diffuseColor = new Color3.Green();
         Avatar.username = username;
-        new BillBoard(Avatar.mesh, Avatar.username);
+        //new BillBoard(Avatar.mesh, Avatar.username);
     }   
     
-    static rotate(isLeft) {
+    /*static rotate(isLeft) {
         //Turning left
         if (isLeft) {
             Avatar.absoluteRotation -= Avatar.rotationSpeed;
@@ -29,15 +30,7 @@ export default class Avatar {
             Avatar.absoluteRotation += Avatar.rotationSpeed;            
             Avatar.mesh.rotate(Axis.Y, -Avatar.rotationSpeed, Space.WORLD);
         }
-    }
-
-    static isOutOfBounds() {
-        let isOut = false
-        if(Avatar.mesh.position.x >= 1.4 || Avatar.mesh.position.x <= -1.4 || Avatar.mesh.position.z >= 1.4 || Avatar.mesh.position.z <= -1.4){
-            isOut = true 
-        }
-        return isOut
-    }    
+    }*/
     
     static send() {
         var x = Avatar.mesh.position.x;
@@ -47,27 +40,23 @@ export default class Avatar {
         IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
-    static update() {
+    static update(position) {
         if (Avatar.mesh !== null) {
+            Avatar.mesh.position = position
+            Avatar.send();
+
+
             //Moving forward
-            if (Input.key.up) {
+            /*if (Input.key.up) {
         		const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
-                const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
                 Avatar.mesh.moveWithCollisions(forward);
-                if(Avatar.isOutOfBounds()) {
-                  Avatar.mesh.moveWithCollisions(backward);
-       
-                }
+
                 Avatar.send();
 
             } else if(Input.key.down){
-                const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
                 const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
 
                 Avatar.mesh.moveWithCollisions(backward);
-                if(Avatar.isOutOfBounds()) {
-                  Avatar.mesh.moveWithCollisions(forward);
-                }
                 Avatar.send();
             }
             //Turning left
@@ -78,7 +67,7 @@ export default class Avatar {
             } else if (Input.key.right) {
                 Avatar.rotate(true);
                 Avatar.send();
-            }
+            }*/
         }
     }
 }

@@ -6,9 +6,9 @@ import BillBoard from './BillBoard'
 export default class Player {
     
     constructor(id, username) {
-        var height = 0.3;
+        var height = 3;
         this.id = id;
-        this.mesh = MeshBuilder.CreateBox("avatar", {height: height, width: 0.1, depth: 0.1}, World.scene);
+        this.mesh = MeshBuilder.CreateBox("avatar", {height: height, width: 1, depth: 1}, World.scene);
         this.mesh.position = Vector3.Zero();
         this.mesh.position.x = 0;
         this.mesh.position.y = height/2;
