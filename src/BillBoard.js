@@ -19,12 +19,12 @@ export default class Billboard {
         this.mesh = MeshBuilder.CreatePlane("billboard", {width: Billboard.width, height: Billboard.height}, World.scene);
         this.mesh.position = Vector3.Zero();
         this.mesh.position.y = Avatar.height - Billboard.height;
-        var advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(this.mesh, 1024, 2560);
+        var advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(this.mesh, 1024, 256);
         advancedTexture.name = "AvatarBillboard";
         var containerUI = new GUI.Rectangle("container");
         containerUI.thickness = 0;
-        containerUI.height = "1000px";
-        containerUI.width = "8000px";
+        containerUI.height = "100px";
+        containerUI.width = "800px";
         advancedTexture.addControl(containerUI);
         this.text = new GUI.TextBlock();
         this.text.fontFamily = "Arial";
@@ -32,7 +32,7 @@ export default class Billboard {
         this.text.color = "white";
         this.text.outlineColor = "black";
         this.text.outlineWidth = 40;
-        this.text.fontSize = 900;
+        this.text.fontSize = 100;
         containerUI.addControl(this.text);
         this.text.text = this.username;
         this.mesh.billboardMode = Mesh.BILLBOARDMODE_ALL;
