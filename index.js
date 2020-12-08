@@ -3,6 +3,8 @@ const express = require('express')
 const app = express();
 const http = require('http').createServer(app);
 const path = require('path');
+const cors = require('cors');
+
 const io = require("socket.io")(http, {
   cors: {
     origin: "http://localhost:3000",
@@ -11,11 +13,19 @@ const io = require("socket.io")(http, {
 });
 
 
+
 app.use(express.static('public'))
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true // <-- REQUIRED backend setting
+};s
+
+app.use(cors(corsOptions));
 
 
 
