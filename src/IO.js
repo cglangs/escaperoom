@@ -14,10 +14,10 @@ export default class IO {
 
             IO.socket.on("auth", function(data){
                     World.init()
-                    Player.init()
-                    Avatar.init(data.username);
-                    Input.init();     
-                    Avatar.send();
+                    //Player.init()
+                    //Avatar.init(data.username);
+                   Input.init();     
+                    //Avatar.send();
             })
 
             IO.socket.on("transform", function(data){
