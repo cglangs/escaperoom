@@ -54,6 +54,10 @@ export default class World {
         World.camera.applyGravity = true;
         World.camera.ellipsoid = new Vector3(1, 1, 1);
         World.camera.speed = 0.1
+        World.camera.keysUp.push(87);
+        World.camera.keysDown.push(83)
+        World.camera.keysRight.push(68)
+        World.camera.keysLeft.push(65)
     }
     
     static setupGround() {
@@ -78,7 +82,6 @@ export default class World {
         wall1.checkCollisions = true;
         wall1.material = new StandardMaterial(""); 
         wall1.position = new Vector3(5, -9, -5);
-        //wall1.rotation = new Vector3(0,Toos.ToRadians(90),0);
         var wall2 = MeshBuilder.CreatePlane("wall2", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
         wall2.position = new Vector3(15,-9,-15);
