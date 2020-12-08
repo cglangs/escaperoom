@@ -137,8 +137,10 @@ Player.globalID = 1;
 });
 
 
+const port = process.env.PORT || 3003;
 
-http.listen(3001, () => {
+
+http.listen(port, () => {
   console.log('listening on *:3001');
 });
 
