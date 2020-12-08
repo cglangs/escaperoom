@@ -4,6 +4,9 @@ import { Vector3, StandardMaterial, MeshBuilder, Axis, Space, Color3} from '@bab
 import Input from './Input'
 import World from './World'
 
+
+
+
 export default class Avatar {
     
     static init(username) {
@@ -26,6 +29,14 @@ export default class Avatar {
             Avatar.absoluteRotation += Avatar.rotationSpeed;            
             Avatar.mesh.rotate(Axis.Y, -Avatar.rotationSpeed, Space.WORLD);
         }
+    }
+
+    static isOutOfBounds() {
+        let isOut = false
+        if(Avatar.mesh.position.x >= 1.4 || Avatar.mesh.position.x <= -1.4 || Avatar.mesh.position.z >= 1.4 || Avatar.mesh.position.z <= -1.4){
+            isOut = true 
+        }
+        return isOut
     }    
     
     static send() {
@@ -36,22 +47,28 @@ export default class Avatar {
         IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
-    static update(meshes) {
+    static update() {
         if (Avatar.mesh !== null) {
             //Moving forward
             if (Input.key.up) {
-
-                let alreadyIntersected
-
         		const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
                 const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
-
                 Avatar.mesh.moveWithCollisions(forward);
-                if(meshes.some((obj) => obj.intersectsMesh(Avatar.mesh))) {
-                  Avatar.mesh.moveWithCollisions(backward);     
+                if(Avatar.isOutOfBounds()) {
+                  Avatar.mesh.moveWithCollisions(backward);
+       
                 }
                 Avatar.send();
 
+            } else if(Input.key.down){
+                const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
+                const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
+
+                Avatar.mesh.moveWithCollisions(backward);
+                if(Avatar.isOutOfBounds()) {
+                  Avatar.mesh.moveWithCollisions(forward);
+                }
+                Avatar.send();
             }
             //Turning left
             if (Input.key.left) {

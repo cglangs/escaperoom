@@ -19,7 +19,7 @@ export default class World {
 
         engine.runRenderLoop(() => {
             World.scene.render();
-            Avatar.update(World.meshes);
+            Avatar.update();
             World.updateCamera();
         });        
         
