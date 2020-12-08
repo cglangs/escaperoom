@@ -74,24 +74,25 @@ export default class World {
 
 
     static setupWalls(){
-        var wall1 = MeshBuilder.CreatePlane("wall1", {width: 20, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        var wall1 = MeshBuilder.CreatePlane("wall1", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall1.checkCollisions = true;
         wall1.material = new StandardMaterial(""); 
         wall1.position = new Vector3(5, -9, -5);
         //wall1.rotation = new Vector3(0,Toos.ToRadians(90),0);
-        /*var wall2 = MeshBuilder.CreatePlane("wall2", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        var wall2 = MeshBuilder.CreatePlane("wall2", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
-        wall2.position = new Vector3(0,1,-1.5);
+        wall2.position = new Vector3(15,-9,-15);
         wall2.material = new StandardMaterial("");
-        var wall3 = MeshBuilder.CreatePlane("wall3", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var wall3 = MeshBuilder.CreatePlane("wall3", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall3.checkCollisions = true;
         wall3.material = new StandardMaterial(""); 
-        wall3.position = new Vector3(-1.5,1,0);
-        wall3.rotation = new Vector3(0,Tools.ToRadians(90),0);
-        var wall4 = MeshBuilder.CreatePlane("wall4", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall3.position = new Vector3(5, -9, -25);
+        var wall4 = MeshBuilder.CreatePlane("wall4", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4.checkCollisions = true;
-        wall4.position = new Vector3(0,1,1.5);
-        wall4.material = new StandardMaterial("");*/
+        wall4.position = new Vector3(-5, -9, -15);
+        wall4.material = new StandardMaterial("");
+        wall4.rotation = new Vector3(0,Tools.ToRadians(90),0);
         var box = Mesh.CreateBox("crate", 2, World.scene);
         box.material = new StandardMaterial("Mat", World.scene);
         box.position = new Vector3(5, -9, -10);
