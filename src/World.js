@@ -1,16 +1,20 @@
 import Avatar from './Avatar'
 //import Chat from './Chat'
-import {FreeCamera, Vector3, StandardMaterial,HemisphericLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {FreeCamera, UniversalCamera, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
 export default class World {
     static init() {
         World.canvas = document.getElementById("canvas");
         var engine = new Engine(World.canvas, true);
-        World.meshes = []
 
         
         World.scene = new Scene(engine);
+        World.scene.gravity = new Vector3(0, -0.9, 0);
+        World.scene.collisionsEnabled = true;
+
+
+
         World.setupCamera();        
         World.setupLights();
         World.setupGround();
@@ -19,8 +23,8 @@ export default class World {
 
         engine.runRenderLoop(() => {
             World.scene.render();
-            Avatar.update();
-            World.updateCamera();
+            //Avatar.update();
+            //World.updateCamera();
         });        
         
         //Resize event
@@ -30,51 +34,79 @@ export default class World {
     }
     
     static setupCamera() {
-        World.camera = new FreeCamera("thirdPersonCam", Vector3.Zero(), World.scene);
-        World.camera.position.x -= Math.sin(-Math.PI/2) * -1 * World.cameraDistance;
-        World.camera.position.y = Avatar.height + Avatar.height/2;
-        World.camera.position.z -= Math.cos(-Math.PI/2) * -1 * World.cameraDistance;
-        var lookAt = Vector3.Zero();
-        lookAt.y = Avatar.height + Avatar.height/2;
-        World.camera.setTarget(lookAt);
+        /*World.camera = new FreeCamera("firstPersonCam", Vector3.Zero(), World.scene);
+        World.camera.ellipsoid = new Vector3(0.1, 0.1, 0.1);
+        World.camera.checkCollisions = true;
+        World.camera.speed = 0.1
+        World.camera.applyGravity = true;
+
+        //World.camera.position.x -= Math.sin(-Math.PI/2) * -1 * World.cameraDistance;
+        World.camera.position.y = 0.7;
+        World.camera.attachControl(World.canvas, true)
+        //World.camera.position.z -= Math.cos(-Math.PI/2) * -1 * World.cameraDistance;
+        //var lookAt = Vector3.Zero();
+        //lookAt.y = Avatar.height + Avatar.height/2;
+        //World.camera.setTarget(lookAt);*/
+        World.camera = new FreeCamera("FreeCamera", new Vector3(0, -8, -20), World.scene);
+        World.camera.attachControl(World.canvas, true);
         World.scene.activeCameras.push(World.camera);
+        World.camera.checkCollisions = true;
+        World.camera.applyGravity = true;
+        World.camera.ellipsoid = new Vector3(1, 1, 1);
+        World.camera.speed = 0.1
     }
     
     static setupGround() {
-        var ground = MeshBuilder.CreateGround("ground", {height: 3, width: 3, subdivisions: 4}, World.scene);
+        /*var ground = MeshBuilder.CreateGround("ground", {height: 3, width: 3, subdivisions: 4}, World.scene);
+        ground.checkCollisions = true;
         ground.position = Vector3.Zero();
         ground.material = new StandardMaterial("matGround", World.scene);
+        ground.material.diffuseTexture = new Texture("ground.jpg", World.scene);*/
+        var ground = Mesh.CreatePlane("ground", 20.0, World.scene);
+        console.log(ground.width)
+        ground.material = new StandardMaterial("groundMat", World.scene);
         ground.material.diffuseTexture = new Texture("ground.jpg", World.scene);
+        ground.position = new Vector3(5, -10, -15);
+        ground.rotation = new Vector3(Math.PI / 2, 0, 0);
+        ground.checkCollisions = true;
+
     }
 
 
     static setupWalls(){
-        var wall1 = MeshBuilder.CreatePlane("wall1", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        var wall1 = MeshBuilder.CreatePlane("wall1", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall1.checkCollisions = true;
         wall1.material = new StandardMaterial(""); 
-        wall1.position = new Vector3(1.5,1,0);
-        wall1.rotation = new Vector3(0,Tools.ToRadians(90),0);
-        World.meshes.push(wall1)
-        var wall2 = MeshBuilder.CreatePlane("wall2", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        wall2.position = new Vector3(0,1,-1.5);
+        wall1.position = new Vector3(5, -9, -5);
+        //wall1.rotation = new Vector3(0,Toos.ToRadians(90),0);
+        var wall2 = MeshBuilder.CreatePlane("wall2", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2.checkCollisions = true;
+        wall2.position = new Vector3(15,-9,-15);
         wall2.material = new StandardMaterial("");
-        World.meshes.push(wall2)
-        var wall3 = MeshBuilder.CreatePlane("wall3", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var wall3 = MeshBuilder.CreatePlane("wall3", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall3.checkCollisions = true;
         wall3.material = new StandardMaterial(""); 
-        wall3.position = new Vector3(-1.5,1,0);
-        wall3.rotation = new Vector3(0,Tools.ToRadians(90),0);
-        World.meshes.push(wall3)
-        var wall4 = MeshBuilder.CreatePlane("wall4", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        wall4.position = new Vector3(0,1,1.5);
+        wall3.position = new Vector3(5, -9, -25);
+        var wall4 = MeshBuilder.CreatePlane("wall4", {width: 20, height: 5, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall4.checkCollisions = true;
+        wall4.position = new Vector3(-5, -9, -15);
         wall4.material = new StandardMaterial("");
-        World.meshes.push(wall4)
+        wall4.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var box = Mesh.CreateBox("crate", 2, World.scene);
+        box.material = new StandardMaterial("Mat", World.scene);
+        box.position = new Vector3(5, -9, -10);
+        box.checkCollisions = true;
     }
     
     static setupLights() {
-        var light = new HemisphericLight("light1", new Vector3(1, 1, 0.5), World.scene);
-        light.intensity = 0.5;        
+        //var light = new HemisphericLight("light1", new Vector3(1, 1, 0.5), World.scene);
+        //light.intensity = 0.5;
+        var light0 = new DirectionalLight("Omni", new Vector3(-2, -5, 2), World.scene);
+        var light1 = new PointLight("Omni", new Vector3(2, -5, -2), World.scene);        
     }
     
-    static updateCamera() {
+    /*static updateCamera() {
         if (typeof Avatar.mesh !== "undefined" && typeof World.camera !== "undefined" && Avatar.mesh !== null) {
             World.camera.position.x = Avatar.mesh.position.x;
             World.camera.position.y = Avatar.mesh.position.y + Avatar.height;
@@ -84,7 +116,7 @@ export default class World {
             var lookAt = new Vector3(Avatar.mesh.position.x, Avatar.mesh.position.y + Avatar.height, Avatar.mesh.position.z);
             World.camera.setTarget(lookAt);
         }
-    }
+    }*/
 }
 
 World.cameraDistance = 1.5;
