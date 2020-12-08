@@ -60,7 +60,7 @@ export default class Avatar {
 
             } else if(Input.key.down){
                 const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
-                const barrier = new Vector3(0.2 * Math.cos(Avatar.absoluteRotation), 0, 0.2 * Math.sin(Avatar.absoluteRotation));
+                const barrier = new Vector3(-0.2 * Math.cos(Avatar.absoluteRotation), 0, -0.2 * Math.sin(Avatar.absoluteRotation));
                 const nextPoint = Avatar.mesh.position.add(backward).add(barrier)
 
 
