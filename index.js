@@ -1,17 +1,9 @@
 //Server
 const express = require('express')
 const app = express();
-const http = require('http').createServer(app);
 const path = require('path');
 const cors = require('cors');
-
-const io = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
-
+const http = require('http').createServer(app);
 
 
 app.use(express.static('public'))
@@ -26,6 +18,18 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
+
+
+
 
 
 
@@ -137,7 +141,7 @@ Player.globalID = 1;
 });
 
 
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3001;
 
 
 http.listen(port, () => {
