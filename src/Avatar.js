@@ -10,7 +10,7 @@ import World from './World'
 export default class Avatar {
     
     static init(username) {
-        Avatar.mesh = MeshBuilder.CreateBox("avatar", {height: Avatar.height, width: 0.1, depth: 0.1}, World.scene);
+        Avatar.mesh = MeshBuilder.CreateBox("avatar", {height: Avatar.height, width: 1, depth: 1}, World.scene);
         Avatar.mesh.position = Vector3.Zero();
         Avatar.mesh.position.y = Avatar.height/2;
         Avatar.mesh.isVisible = false
@@ -73,7 +73,7 @@ export default class Avatar {
 }
 
 Avatar.absoluteRotation = 0;
-Avatar.height = 0.3;
+Avatar.height = 3;
 Avatar.mesh = null;
 Avatar.rotationSpeed = 0.01;
 Avatar.walkSpeed = 0.007;
