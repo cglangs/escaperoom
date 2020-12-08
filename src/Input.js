@@ -23,6 +23,7 @@ export default class Input {
                 break;
             case 40: //DOWN
             case 83: //S
+                 e.preventDefault()               
                 Input.key.down = true;
                 break;
         }
@@ -45,6 +46,7 @@ export default class Input {
                 break;
             case 40: //DOWN
             case 83: //S
+                 e.preventDefault()
                 Input.key.down = false;
                 break;
         }

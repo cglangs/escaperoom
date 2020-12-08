@@ -1,6 +1,6 @@
 import Avatar from './Avatar'
 //import Chat from './Chat'
-import {FreeCamera, Vector3, StandardMaterial,HemisphericLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {FreeCamera, Vector3, StandardMaterial,HemisphericLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools, VertexBuffer} from '@babylonjs/core';
 
 
 export default class World {
@@ -19,7 +19,7 @@ export default class World {
 
         engine.runRenderLoop(() => {
             World.scene.render();
-            Avatar.update();
+            Avatar.update(World.meshes);
             World.updateCamera();
         });        
         
@@ -49,23 +49,27 @@ export default class World {
 
 
     static setupWalls(){
-        var wall1 = MeshBuilder.CreatePlane("wall1", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        var wall1 = MeshBuilder.CreateBox("wall1", {size: 1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall1.material = new StandardMaterial(""); 
-        wall1.position = new Vector3(1.5,1,0);
+        wall1.position = new Vector3(2,0,0);
         wall1.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall1.scaling.x = 3;
         World.meshes.push(wall1)
-        var wall2 = MeshBuilder.CreatePlane("wall2", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        wall2.position = new Vector3(0,1,-1.5);
+        var wall2 = MeshBuilder.CreateBox("wall2", {size: 1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);;
+        wall2.position = new Vector3(0,0,-2);
         wall2.material = new StandardMaterial("");
+        wall2.scaling.x = 3;
         World.meshes.push(wall2)
-        var wall3 = MeshBuilder.CreatePlane("wall3", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        var wall3 = MeshBuilder.CreateBox("wall3", {size: 1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);;
         wall3.material = new StandardMaterial(""); 
-        wall3.position = new Vector3(-1.5,1,0);
+        wall3.position = new Vector3(-2,0,0);
         wall3.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall3.scaling.x = 3;
         World.meshes.push(wall3)
-        var wall4 = MeshBuilder.CreatePlane("wall4", {width: 3, height: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        wall4.position = new Vector3(0,1,1.5);
+        var wall4 = MeshBuilder.CreateBox("wall4", {size: 1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);;
+        wall4.position = new Vector3(0,0,2);
         wall4.material = new StandardMaterial("");
+        wall4.scaling.x = 3;
         World.meshes.push(wall4)
     }
     

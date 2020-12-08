@@ -1,10 +1,8 @@
 import BillBoard from './BillBoard'
 import IO from './IO'
-import { Vector3, StandardMaterial, MeshBuilder, Axis, Space, Color3} from '@babylonjs/core';
+import { Vector3, StandardMaterial, MeshBuilder, Axis, Space, Color3,VertexBuffer} from '@babylonjs/core';
 import Input from './Input'
 import World from './World'
-
-
 
 
 export default class Avatar {
@@ -17,6 +15,7 @@ export default class Avatar {
         Avatar.mesh.material.diffuseColor = new Color3.Green();
         Avatar.username = username;
         new BillBoard(Avatar.mesh, Avatar.username);
+        //console.log(Avatar.mesh.getVerticesData(VertexBuffer.PositionKind))
     }   
     
     static rotate(isLeft) {
@@ -29,14 +28,6 @@ export default class Avatar {
             Avatar.absoluteRotation += Avatar.rotationSpeed;            
             Avatar.mesh.rotate(Axis.Y, -Avatar.rotationSpeed, Space.WORLD);
         }
-    }
-
-    static isOutOfBounds() {
-        let isOut = false
-        if(Avatar.mesh.position.x >= 1.4 || Avatar.mesh.position.x <= -1.4 || Avatar.mesh.position.z >= 1.4 || Avatar.mesh.position.z <= -1.4){
-            isOut = true 
-        }
-        return isOut
     }    
     
     static send() {
@@ -47,36 +38,46 @@ export default class Avatar {
         IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
-    static update() {
+    static update(meshes) {
         if (Avatar.mesh !== null) {
             //Moving forward
+            //const wasNotIntersected = meshes.every((obj) => !obj.intersectsMesh(Avatar.mesh))
             if (Input.key.up) {
         		const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
-                const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
-                Avatar.mesh.moveWithCollisions(forward);
-                if(Avatar.isOutOfBounds()) {
-                  Avatar.mesh.moveWithCollisions(backward);
-       
+
+                const barrier = new Vector3(0.2 * Math.cos(Avatar.absoluteRotation), 0, 0.2 * Math.sin(Avatar.absoluteRotation));
+
+
+                const nextPoint = Avatar.mesh.position.add(forward).add(barrier)
+
+                //console.log(nextPoint)
+                console.log("PREDICT INTERSECTION", meshes.some((obj) => obj.intersectsPoint(nextPoint,false)))
+                             
+                if(meshes.every((obj) => !obj.intersectsPoint(nextPoint))) {
+                  Avatar.mesh.moveWithCollisions(forward);
                 }
                 Avatar.send();
 
             } else if(Input.key.down){
-                const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
                 const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
+                const barrier = new Vector3(0.2 * Math.cos(Avatar.absoluteRotation), 0, 0.2 * Math.sin(Avatar.absoluteRotation));
+                const nextPoint = Avatar.mesh.position.add(backward).add(barrier)
 
-                Avatar.mesh.moveWithCollisions(backward);
-                if(Avatar.isOutOfBounds()) {
-                  Avatar.mesh.moveWithCollisions(forward);
+
+                if(meshes.every((obj) => !obj.intersectsPoint(nextPoint))) {
+                  Avatar.mesh.moveWithCollisions(backward);
                 }
                 Avatar.send();
             }
             //Turning left
             if (Input.key.left) {
                 Avatar.rotate(false);
+
                 Avatar.send();
             //Turning right
             } else if (Input.key.right) {
                 Avatar.rotate(true);
+
                 Avatar.send();
             }
         }
