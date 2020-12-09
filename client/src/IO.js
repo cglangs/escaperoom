@@ -30,20 +30,6 @@ export default class IO {
                 }
             })
 
-            /*IO.socket.on("all users", users => {
-                const peers = [];
-                users.forEach(userID => {
-                    const peer = createPeer(userID, socketRef.current.id, stream);
-                    peersRef.current.push({
-                        peerID: userID,
-                        peer,
-                    })
-                    peers.push(peer);
-                })
-                setPeers(peers);
-            })*/
-
-
 
         }
 

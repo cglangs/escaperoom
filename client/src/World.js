@@ -1,6 +1,6 @@
 import Avatar from './Avatar'
 //import Chat from './Chat'
-import {FreeCamera, UniversalCamera, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {FreeCamera, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
 export default class World {
@@ -91,11 +91,27 @@ export default class World {
         wall3.checkCollisions = true;
         wall3.material = new StandardMaterial(""); 
         wall3.position = new Vector3(5, -9, -26);
-        var wall4 = MeshBuilder.CreateBox("wall4", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        wall4.checkCollisions = true;
-        wall4.position = new Vector3(-6, -9, -15);
-        wall4.material = new StandardMaterial("");
-        wall4.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var wall4Left = MeshBuilder.CreateBox("wall4Left", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall4Left.checkCollisions = true;
+        wall4Left.position = new Vector3(-6, -9, -21);
+        wall4Left.material = new StandardMaterial("");
+        wall4Left.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var wall4Right = MeshBuilder.CreateBox("wall4Right", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall4Right.checkCollisions = true;
+        wall4Right.position = new Vector3(-6, -9, -9);
+        wall4Right.material = new StandardMaterial("");
+        wall4Right.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var wall4Arch = MeshBuilder.CreateBox("wall4Arch", {width: 4, height: 2, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall4Arch.checkCollisions = true;
+        wall4Arch.position = new Vector3(-6, -5, -15);
+        wall4Arch.material = new StandardMaterial("");
+        wall4Arch.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        var wall4Door = MeshBuilder.CreateBox("wall4Door", {width: 4, height: 8, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall4Door.checkCollisions = true;
+        wall4Door.position = new Vector3(-6, -10, -15);
+        wall4Door.material = new StandardMaterial("");
+        wall4Door.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall4Door.material.diffuseColor = new Color3.Black();   
         var box = Mesh.CreateBox("crate", 2, World.scene);
         box.material = new StandardMaterial("Mat", World.scene);
         box.position = new Vector3(5, -9, -10);
