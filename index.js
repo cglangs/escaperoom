@@ -12,6 +12,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
+
 var corsOptions = {
   origin: 'http://localhost:3000',
   credentials: true // <-- REQUIRED backend setting
@@ -19,18 +20,14 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
+const io = require("socket.io")(http)
 
-const io = require("socket.io")(http, {
+/*const io = require("socket.io")(http, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"]
   }
-});
-
-
-
-
-
+});*/
 
 
 //Players
