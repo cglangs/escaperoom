@@ -8,7 +8,9 @@ export default class IO {
     
     static init() {
 
-            IO.socket = io()
+            //IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})
+
+            IO.socket=io()
 
             IO.socket.on("auth", function(data){
                    World.init()
@@ -29,6 +31,20 @@ export default class IO {
                     break;
                 }
             })
+
+            /*IO.socket.on("all users", users => {
+                const peers = [];
+                users.forEach(userID => {
+                    const peer = createPeer(userID, socketRef.current.id, stream);
+                    peersRef.current.push({
+                        peerID: userID,
+                        peer,
+                    })
+                    peers.push(peer);
+                })
+                setPeers(peers);
+            })*/
+
 
 
         }
