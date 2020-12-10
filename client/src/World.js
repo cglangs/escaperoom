@@ -1,6 +1,6 @@
 import Avatar from './Avatar'
 //import Chat from './Chat'
-import {SetValueAction,InterpolateValueAction, FreeCamera,ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
 export default class World {
@@ -69,7 +69,7 @@ export default class World {
         var ground = Mesh.CreatePlane("ground", 20.0, World.scene);
         console.log(ground.width)
         ground.material = new StandardMaterial("groundMat", World.scene);
-        ground.material.diffuseTexture = new Texture("ground.jpg", World.scene);
+        ground.material.diffuseTexture = new Texture("wood_floor_texture.jpg", World.scene);
         ground.position = new Vector3(0,0,0);
         ground.rotation = new Vector3(Math.PI / 2, 0, 0);
         ground.checkCollisions = true;
@@ -82,42 +82,65 @@ export default class World {
         wall1.checkCollisions = true;
         wall1.material = new StandardMaterial(""); 
         wall1.position = new Vector3(0,1,11);
+        wall1.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
         var wall2 = MeshBuilder.CreateBox("wall2", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
         wall2.position = new Vector3(11,1,0);
         wall2.material = new StandardMaterial("");
         wall2.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall2.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
         var wall3 = MeshBuilder.CreateBox("wall3", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall3.checkCollisions = true;
         wall3.material = new StandardMaterial(""); 
         wall3.position = new Vector3(0,1,-11);
+        wall3.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
         var wall4Left = MeshBuilder.CreateBox("wall4Left", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Left.checkCollisions = true;
         wall4Left.position = new Vector3(-11,1,-6);
         wall4Left.material = new StandardMaterial("");
         wall4Left.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall4Left.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
         var wall4Right = MeshBuilder.CreateBox("wall4Right", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Right.checkCollisions = true;
         wall4Right.position = new Vector3(-11,1,6);
         wall4Right.material = new StandardMaterial("");
         wall4Right.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall4Right.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
         var wall4Arch = MeshBuilder.CreateBox("wall4Arch", {width: 4, height: 2, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Arch.checkCollisions = true;
         wall4Arch.position = new Vector3(-11,5,0);
         wall4Arch.material = new StandardMaterial("");
         wall4Arch.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall4Arch.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
-        var wall4Door = MeshBuilder.CreateBox("wall4Door", {width: 4, height: 8, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        var wall4Door = MeshBuilder.CreateBox("wall4Door", {width: 4, height: 4, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Door.checkCollisions = true;
-        wall4Door.position = new Vector3(-11,0,0);
+        wall4Door.position = new Vector3(-11,2,0);
         wall4Door.material = new StandardMaterial("");
         wall4Door.rotation = new Vector3(0,Tools.ToRadians(90),0);
-        wall4Door.material.diffuseColor = new Color3.Black();
+        wall4Door.material.diffuseTexture = new Texture("double_door_texture.jpg", World.scene);
+
+
+        var roof = MeshBuilder.CreateBox("roof", {width: 20, height: 2, depth: 20, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        roof.position = new Vector3(0,7,0);
+        roof.material = new StandardMaterial("");
+        roof.material.diffuseTexture = new Texture("wall_texture.jpg", World.scene);
+
+        SceneLoader.ImportMesh("","","plant_with_color.babylon", World.scene, function(newMeshes){
+            newMeshes.forEach((mesh) => {
+            mesh.material.diffuseColor = new Color3.Green();   
+            mesh.scaling = new Vector3(0.4, 0.4, 0.4);
+            })
+    
+            //do nothing
+        })
+
+
 
         /*var box = Mesh.CreateBox("crate", 2, World.scene);
         box.material = new StandardMaterial("Mat", World.scene);
