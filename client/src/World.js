@@ -47,7 +47,7 @@ export default class World {
         //var lookAt = Vector3.Zero();
         //lookAt.y = Avatar.height + Avatar.height/2;
         //World.camera.setTarget(lookAt);*/
-        World.camera = new FreeCamera("FreeCamera", new Vector3(0, -8, -20), World.scene);
+        World.camera = new FreeCamera("FreeCamera", new Vector3(-5,2,-5), World.scene);
         World.camera.attachControl(World.canvas, true);
         World.scene.activeCameras.push(World.camera);
         World.camera.checkCollisions = true;
@@ -70,7 +70,7 @@ export default class World {
         console.log(ground.width)
         ground.material = new StandardMaterial("groundMat", World.scene);
         ground.material.diffuseTexture = new Texture("ground.jpg", World.scene);
-        ground.position = new Vector3(5, -10, -15);
+        ground.position = new Vector3(0,0,0);
         ground.rotation = new Vector3(Math.PI / 2, 0, 0);
         ground.checkCollisions = true;
 
@@ -81,47 +81,47 @@ export default class World {
         var wall1 = MeshBuilder.CreateBox("wall1", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall1.checkCollisions = true;
         wall1.material = new StandardMaterial(""); 
-        wall1.position = new Vector3(5, -9, -4);
+        wall1.position = new Vector3(0,1,11);
 
         var wall2 = MeshBuilder.CreateBox("wall2", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
-        wall2.position = new Vector3(16,-9,-15);
+        wall2.position = new Vector3(11,1,0);
         wall2.material = new StandardMaterial("");
         wall2.rotation = new Vector3(0,Tools.ToRadians(90),0);
 
         var wall3 = MeshBuilder.CreateBox("wall3", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall3.checkCollisions = true;
         wall3.material = new StandardMaterial(""); 
-        wall3.position = new Vector3(5, -9, -26);
+        wall3.position = new Vector3(0,1,-11);
 
         var wall4Left = MeshBuilder.CreateBox("wall4Left", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Left.checkCollisions = true;
-        wall4Left.position = new Vector3(-6, -9, -21);
+        wall4Left.position = new Vector3(-11,1,-6);
         wall4Left.material = new StandardMaterial("");
         wall4Left.rotation = new Vector3(0,Tools.ToRadians(90),0);
 
         var wall4Right = MeshBuilder.CreateBox("wall4Right", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Right.checkCollisions = true;
-        wall4Right.position = new Vector3(-6, -9, -9);
+        wall4Right.position = new Vector3(-11,1,6);
         wall4Right.material = new StandardMaterial("");
         wall4Right.rotation = new Vector3(0,Tools.ToRadians(90),0);
 
         var wall4Arch = MeshBuilder.CreateBox("wall4Arch", {width: 4, height: 2, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Arch.checkCollisions = true;
-        wall4Arch.position = new Vector3(-6, -5, -15);
+        wall4Arch.position = new Vector3(-11,5,0);
         wall4Arch.material = new StandardMaterial("");
         wall4Arch.rotation = new Vector3(0,Tools.ToRadians(90),0);
 
         var wall4Door = MeshBuilder.CreateBox("wall4Door", {width: 4, height: 8, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Door.checkCollisions = true;
-        wall4Door.position = new Vector3(-6, -10, -15);
+        wall4Door.position = new Vector3(-11,0,0);
         wall4Door.material = new StandardMaterial("");
         wall4Door.rotation = new Vector3(0,Tools.ToRadians(90),0);
         wall4Door.material.diffuseColor = new Color3.Black();
 
-        var box = Mesh.CreateBox("crate", 2, World.scene);
+        /*var box = Mesh.CreateBox("crate", 2, World.scene);
         box.material = new StandardMaterial("Mat", World.scene);
-        box.position = new Vector3(5, -9, -10);
+        box.position = new Vector3(0,1,5);
         box.checkCollisions = true;
         box.actionManager = new ActionManager(World.scene);
         box.actionManager.registerAction(
@@ -137,15 +137,15 @@ export default class World {
                 'visibility',
                 1.0
             )
-       )
+       )*/
 
     }
     
     static setupLights() {
         //var light = new HemisphericLight("light1", new Vector3(1, 1, 0.5), World.scene);
         //light.intensity = 0.5;
-        var light0 = new DirectionalLight("Omni", new Vector3(-2, -5, 2), World.scene);
-        var light1 = new PointLight("Omni", new Vector3(2, -5, -2), World.scene);        
+        var light0 = new DirectionalLight("Omni", new Vector3(-7,5,17), World.scene);
+        var light1 = new PointLight("Omni", new Vector3(-3,5,13), World.scene);        
     }
     
     /*static updateCamera() {

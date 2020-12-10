@@ -8,9 +8,9 @@ export default class IO {
     
     static init() {
 
-            //IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})
+            IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})
 
-            IO.socket=io()
+            //IO.socket=io()
 
             IO.socket.on("auth", function(data){
                    World.init()
