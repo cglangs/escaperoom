@@ -89,7 +89,7 @@ class Player {
         this.y = transform.y;
         this.z = transform.z;
         this.rotation = transform.rotation;
-        this.socket.to("1").emit("transform", {command: "playerMoved", id: this.id, username: this.username, x: this.x, y: this.y, z: this.z, rotation: this.rotation})
+        this.socket.to(this.roomId).emit("transform", {command: "playerMoved", id: this.id, username: this.username, x: this.x, y: this.y, z: this.z, rotation: this.rotation})
 
         //this.sendToEveryoneElse(this.transformJSON());
     }   
@@ -97,7 +97,7 @@ class Player {
     static remove(socket) {
         var objPlayer = Player.all.find(x => x.socket.id === socket.id);
         if(objPlayer){
-            socket.to("1").emit("transform", {command: "playerGone", id: objPlayer.id})
+            socket.to(this.roomId).emit("transform", {command: "playerGone", id: objPlayer.id})
             Player.all = Player.all.filter((obj) => {
                 return obj.socket.id !== socket.id;
             });  
