@@ -1,0 +1,42 @@
+Exporter version: 6.4.6, Blender version: 2.91.0
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  no
+		Texture directory   :  /Users/corygallagher/Documents/node_projects/escapegame/client/public/
+	Python World class constructor completed
+	processing begun of mesh:  Plane
+		WARNING: No materials have been assigned: 
+		num positions      :  4
+		num normals        :  4
+		num tangents       :  0
+		num uvs            :  0
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  2
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of mesh:  Cube.328
+		processing begun of material:  Table1
+		processing begun of material:  Table1_3
+		processing begun of material:  Table1_2
+		processing begun of multimaterial:  table.Multimaterial#0
+		num positions      :  2855
+		num normals        :  2855
+		num tangents       :  0
+		num uvs            :  0
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  1152
+	processing begun of light (POINT):  Lamp
+========= Writing of JSON file started =========
+	writing mesh:  Plane
+	writing mesh:  Cube.328
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.1192 secs

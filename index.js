@@ -79,7 +79,7 @@ class Player {
         this.username = username
         this.authenticated = true;
         console.log(`${new Date().toLocaleString()} - Player ${this.id} authenticaton passed with username ${this.username}`);
-        this.socket.emit("auth",{username: username})
+        this.socket.emit("auth",{success: true, username: username, roomId: roomId})
         this.seeAll();
         
     }
@@ -108,6 +108,7 @@ class Player {
 }
 
 Player.all = new Array();
+rooms = new Set()
 Player.globalID = 1;
 
 
@@ -115,9 +116,24 @@ Player.globalID = 1;
       console.log('a user connected');
 
   socket.on('login', (data) => {
-    socket.join("1")
-    var objPlayer = new Player(socket,"1");
-    objPlayer.login(data.username);
+    if(data.roomId && rooms.has(data.roomId)){
+        console.log("JOINING ROOM")
+        socket.join(data.roomId)
+        var objPlayer = new Player(socket, data.roomId);
+        objPlayer.login(data.username,data.roomId);
+    } else if(!data.roomId){
+      console.log("CREATING ROOM")
+      const newRoomId = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      rooms.add(newRoomId)
+      socket.join(newRoomId)
+      var objPlayer = new Player(socket, newRoomId);
+      objPlayer.login(data.username,newRoomId);
+    } else{
+      console.log("DENIED")
+      socket.emit("auth",{success: false, username: data.username})
+    }
+
+    
   });
 
 
@@ -146,4 +162,8 @@ Player.globalID = 1;
 
 
 
-
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}

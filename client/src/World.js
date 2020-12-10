@@ -67,7 +67,6 @@ export default class World {
         ground.material = new StandardMaterial("matGround", World.scene);
         ground.material.diffuseTexture = new Texture("ground.jpg", World.scene);*/
         var ground = Mesh.CreatePlane("ground", 20.0, World.scene);
-        console.log(ground.width)
         ground.material = new StandardMaterial("groundMat", World.scene);
         ground.material.diffuseTexture = new Texture("wood_floor_texture.jpg", World.scene);
         ground.position = new Vector3(0,0,0);
@@ -133,12 +132,20 @@ export default class World {
 
         SceneLoader.ImportMesh("","","plant_with_color.babylon", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
-            mesh.material.diffuseColor = new Color3.Green();   
             mesh.scaling = new Vector3(0.4, 0.4, 0.4);
             })
+
+
     
             //do nothing
         })
+
+        /*SceneLoader.ImportMesh("","","chair3.babylon", World.scene, function(newMeshes){
+            newMeshes.forEach((mesh) => {
+            mesh.position.x = 5
+            mesh.scaling = new Vector3(1, 1, 1);
+            })
+        })*/
 
 
 
