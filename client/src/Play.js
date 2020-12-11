@@ -34,7 +34,6 @@ const Play = (props) => {
   const peersRef = useRef([]);
   
   const { roomId } = useParams();
-  console.log(roomId)
 
   
   //const roomID = "1";

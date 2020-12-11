@@ -1,5 +1,9 @@
 import Avatar from './Avatar'
 //import Chat from './Chat'
+import '@babylonjs/loaders';
+import 'babylonjs-loaders';
+//import BoomBox from './BoomBox'
+
 import {SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
@@ -52,7 +56,7 @@ export default class World {
         World.scene.activeCameras.push(World.camera);
         World.camera.checkCollisions = true;
         World.camera.applyGravity = true;
-        World.camera.ellipsoid = new Vector3(1.5, 1, 1.5);
+        World.camera.ellipsoid = new Vector3(1.0, 0.66, 1.0);
         World.camera.speed = 0.1
         World.camera.keysUp.push(87);
         World.camera.keysDown.push(83)
@@ -133,19 +137,61 @@ export default class World {
         SceneLoader.ImportMesh("","","plant_with_color.babylon", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
             mesh.scaling = new Vector3(0.4, 0.4, 0.4);
+            //mesh.checkCollisions = true;
+            //console.log(mesh)
+            //mesh.showBoundingBox = true
             })
+            //console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
+            var box = MeshBuilder.CreateBox("myBox", {height: 13, width: 3, depth: 3}, World.scene);
+            box.isVisible = false;    
+            box.parent =  newMeshes[1];
+            box.checkCollisions = true;
+
 
 
     
             //do nothing
         })
 
-        /*SceneLoader.ImportMesh("","","chair3.babylon", World.scene, function(newMeshes){
+        SceneLoader.ImportMesh("","","chair.glb", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
-            mesh.position.x = 5
-            mesh.scaling = new Vector3(1, 1, 1);
+            //mesh.scaling = new Vector3(10, 10, 10);
+            mesh.scaling = new Vector3(1.5, 1.5, 1.5);
+
+            mesh.position = new Vector3(6,0,-5)
+            //mesh.checkCollisions = true;
+            //mesh.showBoundingBox = true
+
             })
-        })*/
+            //newMeshes[1].checkCollisions = true;
+            console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
+            var box = MeshBuilder.CreateBox("myBox", {height: 2, width: 0.55, depth: 0.7}, World.scene);
+            box.isVisible = false;    
+            //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
+            box.parent =  newMeshes[1];
+            box.checkCollisions = true;
+            //do nothing
+        })
+
+        /*SceneLoader.ImportMesh("","","desk.glb", World.scene, function(newMeshes){
+            newMeshes.forEach((mesh) => {
+            //mesh.scaling = new Vector3(10, 10, 10);
+            mesh.scaling = new Vector3(1.5, 1.5, 1.5);
+
+            mesh.position = new Vector3(10,0,-10)
+            //mesh.checkCollisions = true;
+            console.log(mesh)
+            })
+
+ 
+
+
+         })*/
+
+
+
+
+
 
 
 

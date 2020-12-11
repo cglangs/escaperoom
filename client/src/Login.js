@@ -5,7 +5,6 @@ import IO from './IO'
 const Login = (props) => {
 	const [userName, setUsername] = useState('')
 
-	console.log(props.roomId)
 	return(
 	<div>
 		<h1>Welcome</h1>
