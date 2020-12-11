@@ -200,6 +200,22 @@ export default class World {
         drawer1.material = new StandardMaterial("", World.scene);
         drawer1.material.diffuseColor = new Color3.Blue();
 
+        drawer1.actionManager = new ActionManager(World.scene);
+        drawer1.actionManager.registerAction(
+            new InterpolateValueAction(
+                ActionManager.OnPickTrigger,
+                wall4Door,
+                'visibility',
+                0
+            )).then(
+            new InterpolateValueAction(
+                ActionManager.OnPickTrigger,
+                wall4Door,
+                'visibility',
+                1.0
+            )
+       )
+
         var drawer2 = MeshBuilder.CreatePlane("plane2", {height:0.3, width: 1}, World.scene)
         drawer2.position = new Vector3(-5.8,1,4.3)
         drawer2.material = new StandardMaterial("", World.scene);
