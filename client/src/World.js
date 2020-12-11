@@ -173,20 +173,48 @@ export default class World {
             //do nothing
         })
 
-        /*SceneLoader.ImportMesh("","","desk.glb", World.scene, function(newMeshes){
+        SceneLoader.ImportMesh("","","desk.glb", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
             //mesh.scaling = new Vector3(10, 10, 10);
             mesh.scaling = new Vector3(1.5, 1.5, 1.5);
 
             mesh.position = new Vector3(10,0,-10)
+
             //mesh.checkCollisions = true;
-            console.log(mesh)
+            //console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
+            //mesh.showBoundingBox = true
+            //console.log(mesh)
             })
 
- 
+            var box = MeshBuilder.CreateBox("myBox", {height: 2, width: 1.5, depth: 1}, World.scene);
+            box.isVisible = false;    
+            //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
+            box.parent =  newMeshes[1];
+            box.checkCollisions = true;
+
+         })
 
 
-         })*/
+        var drawer1 = MeshBuilder.CreatePlane("plane1", {height:0.3, width: 1}, World.scene)
+        drawer1.position = new Vector3(-5.8,1.34,4.3)
+        drawer1.material = new StandardMaterial("", World.scene);
+        drawer1.material.diffuseColor = new Color3.Blue();
+
+        var drawer2 = MeshBuilder.CreatePlane("plane2", {height:0.3, width: 1}, World.scene)
+        drawer2.position = new Vector3(-5.8,1,4.3)
+        drawer2.material = new StandardMaterial("", World.scene);
+        drawer2.material.diffuseColor = new Color3.Green(); 
+
+        var drawer3 = MeshBuilder.CreatePlane("plane3", {height:0.3, width: 1}, World.scene)
+        drawer3.position = new Vector3(-5.8,0.66,4.3)
+        drawer3.material = new StandardMaterial("", World.scene);
+        drawer3.material.diffuseColor = new Color3.Red();
+
+        var drawer4 = MeshBuilder.CreatePlane("plane4", {height:0.3, width: 1}, World.scene)
+        drawer4.position = new Vector3(-5.8,0.32,4.3)
+        drawer4.material = new StandardMaterial("", World.scene);
+        drawer4.material.diffuseColor = new Color3.Purple();         
+   
 
 
 
