@@ -4,7 +4,7 @@ import '@babylonjs/loaders';
 import 'babylonjs-loaders';
 //import BoomBox from './BoomBox'
 
-import {SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
 export default class World {
@@ -53,7 +53,8 @@ export default class World {
         //World.camera.setTarget(lookAt);*/
         World.camera = new FreeCamera("FreeCamera", new Vector3(-5,2,-5), World.scene);
         World.camera.attachControl(World.canvas, true);
-        World.scene.activeCameras.push(World.camera);
+        //World.scene.activeCameras.push(World.camera);
+        World.scene.activeCamera = World.camera
         World.camera.checkCollisions = true;
         World.camera.applyGravity = true;
         World.camera.ellipsoid = new Vector3(1.0, 0.66, 1.0);
@@ -62,6 +63,8 @@ export default class World {
         World.camera.keysDown.push(83)
         World.camera.keysRight.push(68)
         World.camera.keysLeft.push(65)
+
+        World.arcCamera = new ArcRotateCamera("ArcCamera", 3 * Math.PI / 2, 3 * Math.PI / 8, 30, Vector3.Zero(), World.scene);
     }
     
     static setupGround() {
@@ -220,6 +223,18 @@ export default class World {
         drawer2.position = new Vector3(-5.8,1,4.3)
         drawer2.material = new StandardMaterial("", World.scene);
         drawer2.material.diffuseColor = new Color3.Green(); 
+
+
+        drawer2.actionManager = new ActionManager(World.scene);
+        drawer2.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera = (World.scene.activeCamera == World.camera ? World.arcCamera : World.camera)}
+            )
+        );
 
         var drawer3 = MeshBuilder.CreatePlane("plane3", {height:0.3, width: 1}, World.scene)
         drawer3.position = new Vector3(-5.8,0.66,4.3)
