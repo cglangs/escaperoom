@@ -64,7 +64,7 @@ export default class World {
         World.camera.keysRight.push(68)
         World.camera.keysLeft.push(65)
 
-        World.arcCamera = new ArcRotateCamera("ArcCamera", 3 * Math.PI / 2, 3 * Math.PI / 8, 3, new Vector3(40.0, 0.0, 40.0), World.scene);
+        World.arcCamera = new ArcRotateCamera("ArcCamera", 3 * Math.PI / 2, 3 * Math.PI / 8, 3, new Vector3(0, 0, 0), World.scene);
         World.arcCamera.layerMask = 0x10000000;
     }
     
@@ -87,32 +87,51 @@ export default class World {
     static openDrawer(){
         var boxSize = 1;
         var myPath = [
-                 new Vector3(40.0, 0.0, 40.0),
-                new Vector3(40.0, boxSize, 40.0)
+                 new Vector3(0, 0.0, 0),
+                new Vector3(0, boxSize/2, 0)
         ];
         var currentDrawer = MeshBuilder.CreateTube("currentDrawer", {path: myPath, tessellation:4, cap: 1, radius: boxSize, sideOrientation: Mesh.DOUBLESIDE, updatable: true}, World.scene);
+        currentDrawer.material = new StandardMaterial("", World.scene);
+        currentDrawer.material.diffuseTexture = new Texture("desk_texture.png", World.scene);
         currentDrawer.layerMask = 0x10000000;
+
+        var box = MeshBuilder.CreateBox("clue", {width: 0.1, height: 0.1, depth: 0.1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        box.position.y = 0.05;
+        //box.position = new Vector3(40.0, 0.0, 40.0);
+        box.parent =  currentDrawer
+        box.layerMask = 0x10000000;
+
+
 
         World.scene.activeCamera = World.arcCamera
         World.arcCamera.attachControl(World.canvas, true);
+        var light = new HemisphericLight("light1", new Vector3(1, 1, 0.5), World.scene);
+
+
+
 
         var advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         advancedTexture.layer.layerMask = 0x10000000;
 
-        var button = GUI.Button.CreateImageButton("but", "Return to room", "");
+        var button = GUI.Button.CreateImageButton("but", "Return", "");
         button.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
         button.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
         button.width = 0.1;
         button.height = "40px";
         button.color = "white";
         button.background = "green";
+        button.onPointerUpObservable.add(function() {
+            World.closeDrawer(currentDrawer,light)
+        });
         advancedTexture.addControl(button);
 
 
     }
 
-    static closeDrawer(){
-
+    static closeDrawer(currentDrawer,light){
+        currentDrawer.dispose();
+        World.scene.activeCamera = World.camera
+        light.dispose()
     }
 
 
@@ -314,7 +333,6 @@ export default class World {
     }
     
     static setupLights() {
-        //var light = new HemisphericLight("light1", new Vector3(1, 1, 0.5), World.scene);
         //light.intensity = 0.5;
         var light0 = new DirectionalLight("Omni", new Vector3(-7,5,17), World.scene);
         var light1 = new PointLight("Omni", new Vector3(-3,5,13), World.scene);        
