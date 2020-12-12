@@ -84,7 +84,7 @@ export default class World {
     }
 
 
-    static openDrawer(){
+    static openDrawer(drawerNumber){
         var boxSize = 1;
         var myPath = [
                  new Vector3(0, 0.0, 0),
@@ -94,12 +94,30 @@ export default class World {
         currentDrawer.material = new StandardMaterial("", World.scene);
         currentDrawer.material.diffuseTexture = new Texture("desk_texture.png", World.scene);
         currentDrawer.layerMask = 0x10000000;
+        let boxColor
+        switch (drawerNumber) {
+          case 1:
+            boxColor =  new Color3.Blue()
+            break;
+          case 2:
+            boxColor =  new Color3.Green()
+            break;
+          case 3:
+            boxColor = new Color3.Red()
+            break;
+          case 4:
+            boxColor = new Color3.Purple()
+            break;
+
+        }
 
         var box = MeshBuilder.CreateBox("clue", {width: 0.1, height: 0.1, depth: 0.1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        box.position.y = 0.05;
-        //box.position = new Vector3(40.0, 0.0, 40.0);
+        box.position.y = 0.051;
+        box.material = new StandardMaterial("", World.scene);
+        box.material.diffuseColor = boxColor;
         box.parent =  currentDrawer
         box.layerMask = 0x10000000;
+
 
 
 
@@ -260,19 +278,16 @@ export default class World {
 
         drawer1.actionManager = new ActionManager(World.scene);
         drawer1.actionManager.registerAction(
-            new InterpolateValueAction(
-                ActionManager.OnPickTrigger,
-                wall4Door,
-                'visibility',
-                0
-            )).then(
-            new InterpolateValueAction(
-                ActionManager.OnPickTrigger,
-                wall4Door,
-                'visibility',
-                1.0
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(1) : World.closeDrawer()}
             )
-       )
+        );
+
+  
 
         var drawer2 = MeshBuilder.CreatePlane("plane2", {height:0.3, width: 1}, World.scene)
         drawer2.position = new Vector3(-5.8,1,4.3)
@@ -287,7 +302,7 @@ export default class World {
                     trigger: ActionManager.OnPickTrigger
                     //parameter: 'r'
                 },
-                function () { World.scene.activeCamera == World.camera ? World.openDrawer() : World.closeDrawer()}
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(2) : World.closeDrawer()}
             )
         );
 
@@ -296,16 +311,51 @@ export default class World {
         drawer3.material = new StandardMaterial("", World.scene);
         drawer3.material.diffuseColor = new Color3.Red();
 
+        drawer3.actionManager = new ActionManager(World.scene);
+        drawer3.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(3) : World.closeDrawer()}
+            )
+        );
+
         var drawer4 = MeshBuilder.CreatePlane("plane4", {height:0.3, width: 1}, World.scene)
         drawer4.position = new Vector3(-5.8,0.32,4.3)
         drawer4.material = new StandardMaterial("", World.scene);
-        drawer4.material.diffuseColor = new Color3.Purple();         
+        drawer4.material.diffuseColor = new Color3.Purple();
+
+        drawer4.actionManager = new ActionManager(World.scene);
+        drawer4.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(4) : World.closeDrawer()}
+            )
+        );         
    
 
 
 
 
-
+      /*drawer1.actionManager.registerAction(
+            new InterpolateValueAction(
+                ActionManager.OnPickTrigger,
+                wall4Door,
+                'visibility',
+                0
+            )).then(
+            new InterpolateValueAction(
+                ActionManager.OnPickTrigger,
+                wall4Door,
+                'visibility',
+                1.0
+            )
+       )*/
 
 
 
