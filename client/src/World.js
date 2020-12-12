@@ -3,7 +3,7 @@ import Avatar from './Avatar'
 import '@babylonjs/loaders';
 import 'babylonjs-loaders';
 //import BoomBox from './BoomBox'
-
+import * as GUI from '@babylonjs/gui'
 import {ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
@@ -64,7 +64,8 @@ export default class World {
         World.camera.keysRight.push(68)
         World.camera.keysLeft.push(65)
 
-        World.arcCamera = new ArcRotateCamera("ArcCamera", 3 * Math.PI / 2, 3 * Math.PI / 8, 30, Vector3.Zero(), World.scene);
+        World.arcCamera = new ArcRotateCamera("ArcCamera", 3 * Math.PI / 2, 3 * Math.PI / 8, 3, new Vector3(40.0, 0.0, 40.0), World.scene);
+        World.arcCamera.layerMask = 0x10000000;
     }
     
     static setupGround() {
@@ -83,12 +84,45 @@ export default class World {
     }
 
 
+    static openDrawer(){
+        var boxSize = 1;
+        var myPath = [
+                 new Vector3(40.0, 0.0, 40.0),
+                new Vector3(40.0, boxSize, 40.0)
+        ];
+        var currentDrawer = MeshBuilder.CreateTube("currentDrawer", {path: myPath, tessellation:4, cap: 1, radius: boxSize, sideOrientation: Mesh.DOUBLESIDE, updatable: true}, World.scene);
+        currentDrawer.layerMask = 0x10000000;
+
+        World.scene.activeCamera = World.arcCamera
+        World.arcCamera.attachControl(World.canvas, true);
+
+        var advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        advancedTexture.layer.layerMask = 0x10000000;
+
+        var button = GUI.Button.CreateImageButton("but", "Return to room", "");
+        button.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        button.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
+        button.width = 0.1;
+        button.height = "40px";
+        button.color = "white";
+        button.background = "green";
+        advancedTexture.addControl(button);
+
+
+    }
+
+    static closeDrawer(){
+
+    }
+
+
     static setupWalls(){
         var wall1 = MeshBuilder.CreateBox("wall1", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall1.checkCollisions = true;
         wall1.material = new StandardMaterial(""); 
         wall1.position = new Vector3(0,1,11);
         wall1.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+
 
         var wall2 = MeshBuilder.CreateBox("wall2", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
@@ -102,6 +136,7 @@ export default class World {
         wall3.material = new StandardMaterial(""); 
         wall3.position = new Vector3(0,1,-11);
         wall3.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+
 
         var wall4Left = MeshBuilder.CreateBox("wall4Left", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall4Left.checkCollisions = true;
@@ -130,6 +165,7 @@ export default class World {
         wall4Door.material = new StandardMaterial("");
         wall4Door.rotation = new Vector3(0,Tools.ToRadians(90),0);
         wall4Door.material.diffuseTexture = new Texture("double_door_texture.jpg", World.scene);
+
 
 
         var roof = MeshBuilder.CreateBox("roof", {width: 20, height: 2, depth: 20, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
@@ -232,7 +268,7 @@ export default class World {
                     trigger: ActionManager.OnPickTrigger
                     //parameter: 'r'
                 },
-                function () { World.scene.activeCamera = (World.scene.activeCamera == World.camera ? World.arcCamera : World.camera)}
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer() : World.closeDrawer()}
             )
         );
 
@@ -246,6 +282,7 @@ export default class World {
         drawer4.material = new StandardMaterial("", World.scene);
         drawer4.material.diffuseColor = new Color3.Purple();         
    
+
 
 
 
