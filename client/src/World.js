@@ -153,6 +153,70 @@ export default class World {
     }
 
 
+    static openNumPad(mesh1,mesh2){
+        var advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+        var input = new GUI.InputText();
+        input.width = 0.05;
+        input.maxWidth = 0.05;
+        input.height = "40px";
+        input.color = "white";
+        input.background = "black";
+        advancedTexture.addControl(input);
+
+
+        var button = GUI.Button.CreateImageButton("SubmitButton", "Submit", "");
+        button.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        button.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        button.width = 0.1;
+        button.height = "40px";
+        button.color = "white";
+        button.background = "black";
+        /*button.onPointerUpObservable.add(function() {
+            mesh1.dispose()
+            mesh2.dispose()
+            input.dispose()
+            button.dispose()
+        });*/
+        advancedTexture.addControl(button);
+
+        var keyboard = new GUI.VirtualKeyboard();
+        keyboard.addKeysRow([
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "0",
+          "\u2190"
+        ]);
+        keyboard.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+        advancedTexture.addControl(keyboard);
+        keyboard.connect(input);
+        advancedTexture.moveFocusToControl(input)
+
+        input.onBlurObservable.add(function() {
+            if (1===1) {
+                mesh1.dispose()
+                mesh2.dispose()
+                input.dispose()
+                button.dispose()
+           }
+        });
+
+    }
+
+        static closeNumPad(){
+
+
+
+        }
+
+
     static setupWalls(){
         var wall1 = MeshBuilder.CreateBox("wall1", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall1.checkCollisions = true;
@@ -216,6 +280,18 @@ export default class World {
         safeFront.rotation = new Vector3(0,Tools.ToRadians(90),0);
         safeFront.material.diffuseTexture = new Texture("safe_texture.png", World.scene);
         safeBack.checkCollisions = true
+
+        safeFront.actionManager = new ActionManager(World.scene);
+        safeFront.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.openNumPad(safeFront, safeFrontBorder)}
+            )
+        );
+
 
 
         var safeFrontBorder = MeshBuilder.CreatePlane("safeFrontBorder", {height:2, width: 4}, World.scene)
