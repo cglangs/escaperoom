@@ -4,7 +4,7 @@ import '@babylonjs/loaders';
 import 'babylonjs-loaders';
 //import BoomBox from './BoomBox'
 import * as GUI from '@babylonjs/gui'
-import {ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {Vector4,ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
 export default class World {
@@ -161,12 +161,72 @@ export default class World {
         wall1.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
 
-        var wall2 = MeshBuilder.CreateBox("wall2", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        /*var wall2 = MeshBuilder.CreateBox("wall2", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
         wall2.position = new Vector3(11,1,0);
         wall2.material = new StandardMaterial("");
         wall2.rotation = new Vector3(0,Tools.ToRadians(90),0);
-        wall2.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+        wall2.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);*/
+
+        var wall2Left = MeshBuilder.CreateBox("wall2Left", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2Left.checkCollisions = true;
+        wall2Left.position = new Vector3(11,1,-6);
+        wall2Left.material = new StandardMaterial("");
+        wall2Left.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall2Left.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+
+        var wall2Right = MeshBuilder.CreateBox("wall2Right", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2Right.checkCollisions = true;
+        wall2Right.position = new Vector3(11,1,6);
+        wall2Right.material = new StandardMaterial("");
+        wall2Right.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall2Right.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+
+        var wall2Arch = MeshBuilder.CreateBox("wall2Arch", {width: 4, height: 4, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2Arch.checkCollisions = true;
+        wall2Arch.position = new Vector3(11,4,0);
+        wall2Arch.material = new StandardMaterial("");
+        wall2Arch.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall2Arch.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+
+        var wall2Base = MeshBuilder.CreateBox("wall2Base", {width: 4, height: 2, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall2Base.checkCollisions = true;
+        wall2Base.position = new Vector3(11,-1,0);
+        wall2Base.material = new StandardMaterial("");
+        wall2Base.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        wall2Base.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+
+
+        var safeBack = MeshBuilder.CreatePlane("safeBack", {height:5, width: 4}, World.scene)
+        safeBack.position = new Vector3(12, 1, 0)
+        safeBack.material = new StandardMaterial("", World.scene);
+        safeBack.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        safeBack.checkCollisions = true
+
+        var safeBackBorder = MeshBuilder.CreatePlane("safeBackBorder", {height:5, width: 4}, World.scene)
+        safeBackBorder.position = new Vector3(11.5, 1, 0)
+        safeBackBorder.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        safeBackBorder.checkCollisions = true
+        safeBackBorder.isVisible = false; 
+
+
+        var safeFront = MeshBuilder.CreatePlane("safeFront", {height:2, width: 4}, World.scene)
+        safeFront.position = new Vector3(10, 1, 0)
+        safeFront.material = new StandardMaterial("", World.scene);
+        safeFront.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        safeFront.material.diffuseTexture = new Texture("safe_texture.png", World.scene);
+        safeBack.checkCollisions = true
+
+
+        var safeFrontBorder = MeshBuilder.CreatePlane("safeFrontBorder", {height:2, width: 4}, World.scene)
+        safeFrontBorder.position = new Vector3(9.5, 1, 0);
+        safeFrontBorder.rotation = new Vector3(0,Tools.ToRadians(90),0);
+        safeFrontBorder.checkCollisions = true;
+        safeFrontBorder.isVisible = false; 
+
+
+
+
 
         var wall3 = MeshBuilder.CreateBox("wall3", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall3.checkCollisions = true;
@@ -269,6 +329,7 @@ export default class World {
             box.checkCollisions = true;
 
          })
+
 
 
         var drawer1 = MeshBuilder.CreatePlane("plane1", {height:0.3, width: 1}, World.scene)
