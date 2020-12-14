@@ -426,6 +426,29 @@ export default class World {
             //do nothing
         })
 
+         SceneLoader.ImportMesh("","","bookshelfFrida.babylon", World.scene, function(newMeshes){
+            newMeshes.forEach((mesh) => {
+            mesh.parent = wall1
+
+            mesh.scaling = new Vector3(0.4, 0.4, 0.4);
+            mesh.rotation = new Vector3(Tools.ToRadians(-90),Tools.ToRadians(180),0);
+            mesh.position = mesh.position.add(new Vector3(6,0,-2))
+            //mesh.checkCollisions = true;
+            //console.log(mesh)
+            //mesh.showBoundingBox = true
+            })
+            //console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
+            /*var box = MeshBuilder.CreateBox("ridaBox", {height: 13, width: 3, depth: 3}, World.scene);
+            box.isVisible = true;    
+            box.parent =  newMeshes[1];
+            box.checkCollisions = true;*/
+
+
+
+    
+            //do nothing
+        })
+
         SceneLoader.ImportMesh("","","chair.glb", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
             //mesh.scaling = new Vector3(10, 10, 10);
@@ -592,7 +615,14 @@ export default class World {
     static setupLights() {
         //light.intensity = 0.5;
         var light0 = new DirectionalLight("Omni", new Vector3(-7,5,17), World.scene);
-        var light1 = new PointLight("Omni", new Vector3(-3,5,13), World.scene);        
+        //var light2 = new DirectionalLight("Omni", new Vector3(7,-5,-17), World.scene);
+        //var light4 = new DirectionalLight("Omni", new Vector3(0,0,0), World.scene);
+        var light1 = new PointLight("Omni", new Vector3(-3,5,13), World.scene); 
+        //var light3 = new PointLight("Omni", new Vector3(3,5,-13), World.scene);  
+        //var light5 = new PointLight("Omni", new Vector3(0,0,0), World.scene);
+        //var light6 = new PointLight("Omni", new Vector3(0,3,-20), World.scene);
+
+       
     }
     
     /*static updateCamera() {
