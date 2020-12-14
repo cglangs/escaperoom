@@ -5,13 +5,40 @@ import 'babylonjs-loaders';
 //import BoomBox from './BoomBox'
 import * as GUI from '@babylonjs/gui'
 import IO from './IO'
-import {Vector4,ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {DefaultLoadingScreen,  Vector4,ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
+
+DefaultLoadingScreen.prototype.displayLoadingUI = function () {
+    if (document.getElementById("customLoadingScreenDiv")) {
+        // Do not add a loading screen if there is already one
+        document.getElementById("customLoadingScreenDiv").style.display = "initial";
+        return;
+    }
+    this._loadingDiv = document.createElement("div");
+    this._loadingDiv.id = "customLoadingScreenDiv";
+    this._loadingDiv.innerHTML = "Preparing room...";
+    var customLoadingScreenCss = document.createElement('style');
+    customLoadingScreenCss.type = 'text/css';
+    customLoadingScreenCss.innerHTML = `
+    #customLoadingScreenDiv{
+        background-color: lightBlue;
+        color: white;
+        font-size:50px;
+        text-align:center;
+        padding-top: 20%;
+    }
+    `;
+    document.getElementsByTagName('head')[0].appendChild(customLoadingScreenCss);
+    this._resizeLoadingUI();
+    window.addEventListener("resize", this._resizeLoadingUI);
+    document.body.appendChild(this._loadingDiv);
+};
 
 export default class World {
     static init() {
         World.canvas = document.getElementById("canvas");
         var engine = new Engine(World.canvas, true);
+        //World.is_loaded = false
 
         
         World.scene = new Scene(engine);
@@ -27,15 +54,34 @@ export default class World {
         //Chat.init()
 
         engine.runRenderLoop(() => {
-            World.scene.render();
-            Avatar.update(World.camera.position, World.camera.cameraRotation);
+            //console.log(World.is_loaded)
+            //if(World.is_loaded){
+                World.scene.render();
+                Avatar.update(World.camera.position, World.camera.cameraRotation);
+            //}
+
             //World.updateCamera();
-        });        
+        });    
+
+        engine.displayLoadingUI();
+    
+        World.scene.executeWhenReady(function() {
+            //engine.hideLoadingUI();
+            var myobj = document.getElementById("customLoadingScreenDiv");
+            myobj.remove();
+        }) 
         
         //Resize event
         window.addEventListener("resize", () => {
             engine.resize();
         });
+
+        /*var loadingScreen = new CustomLoadingScreen("I'm loading!!");
+        // replace the default loading screen
+        engine.loadingScreen = loadingScreen;
+        // show the loading screen
+        engine.displayLoadingUI();*/
+
     }
 
     static roomModification(actionCode){
@@ -390,7 +436,7 @@ export default class World {
 
             })
             //newMeshes[1].checkCollisions = true;
-            console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
+            //console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
             var box = MeshBuilder.CreateBox("myBox", {height: 2, width: 0.55, depth: 0.7}, World.scene);
             box.isVisible = false;    
             //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
@@ -417,6 +463,8 @@ export default class World {
             //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
             box.parent =  newMeshes[1];
             box.checkCollisions = true;
+            World.is_loaded = true
+            //console.log(World.is_loaded)
 
          })
 
