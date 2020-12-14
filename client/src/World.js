@@ -4,6 +4,7 @@ import '@babylonjs/loaders';
 import 'babylonjs-loaders';
 //import BoomBox from './BoomBox'
 import * as GUI from '@babylonjs/gui'
+import IO from './IO'
 import {Vector4,ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
@@ -27,7 +28,7 @@ export default class World {
 
         engine.runRenderLoop(() => {
             World.scene.render();
-            Avatar.update(World.camera.position);
+            Avatar.update(World.camera.position, World.camera.cameraRotation);
             //World.updateCamera();
         });        
         
@@ -35,6 +36,18 @@ export default class World {
         window.addEventListener("resize", () => {
             engine.resize();
         });
+    }
+
+    static roomModification(actionCode){
+        switch (actionCode) {
+          case 1:
+            World.scene.getMeshByName("safeFront").dispose()
+            World.scene.getMeshByName("safeFrontBorder").dispose()
+            break;
+
+        }
+
+
     }
     
     static setupCamera() {
@@ -205,6 +218,7 @@ export default class World {
                 mesh2.dispose()
                 input.dispose()
                 button.dispose()
+                IO.socket.emit('room modified', {actionCode: 1})
            }
         });
 

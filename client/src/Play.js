@@ -111,7 +111,7 @@ const Play = (props) => {
                     <AudioTag key={index} peer={peer} />
                 );
         })}
-        <p>{IO.currentRoomId}</p>
+        <p>{IO.currentRoomId && window.location.hostname + '/' + IO.currentRoomId}</p>
         <canvas id="canvas" style={{"width": "100%", "height": "100%"}}/>
     </div>
   )

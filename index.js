@@ -83,6 +83,10 @@ class Player {
         this.seeAll();
         
     }
+
+    modifyRoom(data){
+      this.socket.to(this.roomId).emit("room modified", {actionCode: data.actionCode})
+    }
     
     transform(transform) {
         this.x = transform.x;
@@ -141,6 +145,15 @@ Player.globalID = 1;
     var objPlayer = Player.find(socket.id);
     objPlayer.transform(data);
   });
+
+
+  socket.on('room modified', (data) => {
+     console.log("ROOM MODIFIED")
+     var objPlayer = Player.find(socket.id);
+    objPlayer.modifyRoom(data);
+
+  });
+
 
   socket.on("sending signal", payload => {
       console.log(payload.userToSignal)

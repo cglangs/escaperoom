@@ -33,7 +33,6 @@ export default class IO {
             })
 
             IO.socket.on("transform", function(data){
-                console.log(data)
                 switch(data.command) {
                 case "playerGone":
                     Player.remove(data);
@@ -42,6 +41,12 @@ export default class IO {
                     Player.move(data);
                     break;
                 }
+            })
+
+
+
+            IO.socket.on("room modified", function(data){
+                World.roomModification(data.actionCode)
             })
 
             /*IO.socket.on("all users", users => {

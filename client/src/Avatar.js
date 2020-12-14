@@ -40,9 +40,13 @@ export default class Avatar {
         IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
-    static update(position) {
+    static update(position, cameraRotation) {
         if (Avatar.mesh !== null) {
             Avatar.mesh.position = position
+            Avatar.absoluteRotation += cameraRotation.y
+            //console.log(rotation)
+            //console.log(cameraRotation)
+            //console.log(cameraDirection)
             Avatar.send();
 
 
