@@ -76,6 +76,7 @@ export default class World {
             engine.resize();
         });
 
+
         /*var loadingScreen = new CustomLoadingScreen("I'm loading!!");
         // replace the default loading screen
         engine.loadingScreen = loadingScreen;
@@ -463,12 +464,19 @@ export default class World {
             //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
             box.parent =  newMeshes[1];
             box.checkCollisions = true;
-            World.is_loaded = true
-            //console.log(World.is_loaded)
 
          })
 
+        SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
+            console.log(newMeshes)
+            newMeshes.forEach((mesh) => {
+            mesh.parent = wall1
+            mesh.position = mesh.position.add(new Vector3(-2,2,-1))
+            mesh.rotation = new Vector3(Tools.ToRadians(-90),0,0);
+            mesh.scaling = new Vector3(3.5, 3.5, 3.5)
+            })
 
+         })
 
         var drawer1 = MeshBuilder.CreatePlane("plane1", {height:0.3, width: 1}, World.scene)
         drawer1.position = new Vector3(-5.8,1.34,4.3)
