@@ -12,11 +12,11 @@ export default class IO {
     static init() {
             IO.currentRoomId = null
             console.log(process.env.NODE_ENV)
-            if(process.env.NODE_ENV === 'development'){
-                IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})                
-            } else{
+            //if(process.env.NODE_ENV === 'development'){
+            //    IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})                
+            //} else{
                 IO.socket=io()                
-            }
+            //}
 
             IO.socket.on("auth", function(data){
                 if(data.success){
