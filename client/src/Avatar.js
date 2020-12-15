@@ -42,6 +42,7 @@ export default class Avatar {
     
     static update(position, cameraRotation) {
         if (Avatar.mesh !== null) {
+            console.log(position)
             Avatar.mesh.position = position
             Avatar.absoluteRotation += cameraRotation.y
             //console.log(rotation)

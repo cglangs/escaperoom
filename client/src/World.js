@@ -117,7 +117,7 @@ export default class World {
         World.scene.activeCamera = World.camera
         World.camera.checkCollisions = true;
         World.camera.applyGravity = true;
-        World.camera.ellipsoid = new Vector3(1.0, 0.66, 1.0);
+        World.camera.ellipsoid = new Vector3(1.0, 1.0, 1.0);
         World.camera.speed = 0.1
         World.camera.keysUp.push(87);
         World.camera.keysDown.push(83)
@@ -157,16 +157,16 @@ export default class World {
         let boxColor
         switch (drawerNumber) {
           case 1:
-            boxColor =  new Color3.Blue()
-            break;
-          case 2:
             boxColor =  new Color3.Green()
             break;
+          case 2:
+            boxColor =  new Color3.Red()
+            break;
           case 3:
-            boxColor = new Color3.Red()
+            boxColor = new Color3.Blue()
             break;
           case 4:
-            boxColor = new Color3.Purple()
+            boxColor = new Color3(0, 206/255, 209/255)
             break;
 
         }
@@ -271,11 +271,7 @@ export default class World {
 
     }
 
-        static closeNumPad(){
-
-
-
-        }
+ 
 
 
     static setupWalls(){
@@ -427,21 +423,25 @@ export default class World {
         })
 
          SceneLoader.ImportMesh("","","bookshelfFrida.babylon", World.scene, function(newMeshes){
+            console.log(newMeshes)
             newMeshes.forEach((mesh) => {
             mesh.parent = wall1
 
-            mesh.scaling = new Vector3(0.4, 0.4, 0.4);
+            mesh.scaling = new Vector3(0.45, 0.45, 0.45);
             mesh.rotation = new Vector3(Tools.ToRadians(-90),Tools.ToRadians(180),0);
-            mesh.position = mesh.position.add(new Vector3(6,0,-2))
+            mesh.position = mesh.position.add(new Vector3(6,1,-2))
             //mesh.checkCollisions = true;
             //console.log(mesh)
             //mesh.showBoundingBox = true
             })
-            //console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
-            /*var box = MeshBuilder.CreateBox("ridaBox", {height: 13, width: 3, depth: 3}, World.scene);
-            box.isVisible = true;    
-            box.parent =  newMeshes[1];
-            box.checkCollisions = true;*/
+            //console.log(newMeshes[0].getBoundingInfo().boundingBox.extendSize.scale(2))
+            var box = MeshBuilder.CreateBox("fridaBox", {height: 10, width: 6, depth: 5}, World.scene);
+            box.position = box.position.add(new Vector3(3,0,-2))
+            box.rotation = new Vector3(Tools.ToRadians(-90),0,0);
+
+            box.isVisible = false;   
+            box.parent =  newMeshes[0];
+            box.checkCollisions = true;
 
 
 
@@ -461,7 +461,7 @@ export default class World {
             })
             //newMeshes[1].checkCollisions = true;
             //console.log(newMeshes[1].getBoundingInfo().boundingBox.extendSize.scale(2))
-            var box = MeshBuilder.CreateBox("myBox", {height: 2, width: 0.55, depth: 0.7}, World.scene);
+            var box = MeshBuilder.CreateBox("chairBox", {height: 2, width: 0.55, depth: 0.7}, World.scene);
             box.isVisible = false;    
             //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
             box.parent =  newMeshes[1];
@@ -482,16 +482,16 @@ export default class World {
             //console.log(mesh)
             })
 
-            var box = MeshBuilder.CreateBox("myBox", {height: 2, width: 1.5, depth: 1}, World.scene);
+            var box = MeshBuilder.CreateBox("deskBox", {height: 2, width: 1.5, depth: 1}, World.scene);
             box.isVisible = false;    
             //box.setPositionWithLocalVector(new Vector3(0, 1, 0))
             box.parent =  newMeshes[1];
             box.checkCollisions = true;
+            World.setUpDrawers(newMeshes[1])
 
          })
 
         SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
-            console.log(newMeshes)
             newMeshes.forEach((mesh) => {
             mesh.parent = wall1
             mesh.position = mesh.position.add(new Vector3(-2,2,-1))
@@ -501,73 +501,7 @@ export default class World {
 
          })
 
-        var drawer1 = MeshBuilder.CreatePlane("plane1", {height:0.3, width: 1}, World.scene)
-        drawer1.position = new Vector3(-5.8,1.34,4.3)
-        drawer1.material = new StandardMaterial("", World.scene);
-        drawer1.material.diffuseColor = new Color3.Blue();
 
-        drawer1.actionManager = new ActionManager(World.scene);
-        drawer1.actionManager.registerAction(
-            new ExecuteCodeAction(
-                {
-                    trigger: ActionManager.OnPickTrigger
-                    //parameter: 'r'
-                },
-                function () { World.scene.activeCamera == World.camera ? World.openDrawer(1) : World.closeDrawer()}
-            )
-        );
-
-  
-
-        var drawer2 = MeshBuilder.CreatePlane("plane2", {height:0.3, width: 1}, World.scene)
-        drawer2.position = new Vector3(-5.8,1,4.3)
-        drawer2.material = new StandardMaterial("", World.scene);
-        drawer2.material.diffuseColor = new Color3.Green(); 
-
-
-        drawer2.actionManager = new ActionManager(World.scene);
-        drawer2.actionManager.registerAction(
-            new ExecuteCodeAction(
-                {
-                    trigger: ActionManager.OnPickTrigger
-                    //parameter: 'r'
-                },
-                function () { World.scene.activeCamera == World.camera ? World.openDrawer(2) : World.closeDrawer()}
-            )
-        );
-
-        var drawer3 = MeshBuilder.CreatePlane("plane3", {height:0.3, width: 1}, World.scene)
-        drawer3.position = new Vector3(-5.8,0.66,4.3)
-        drawer3.material = new StandardMaterial("", World.scene);
-        drawer3.material.diffuseColor = new Color3.Red();
-
-        drawer3.actionManager = new ActionManager(World.scene);
-        drawer3.actionManager.registerAction(
-            new ExecuteCodeAction(
-                {
-                    trigger: ActionManager.OnPickTrigger
-                    //parameter: 'r'
-                },
-                function () { World.scene.activeCamera == World.camera ? World.openDrawer(3) : World.closeDrawer()}
-            )
-        );
-
-        var drawer4 = MeshBuilder.CreatePlane("plane4", {height:0.3, width: 1}, World.scene)
-        drawer4.position = new Vector3(-5.8,0.32,4.3)
-        drawer4.material = new StandardMaterial("", World.scene);
-        drawer4.material.diffuseColor = new Color3.Purple();
-
-        drawer4.actionManager = new ActionManager(World.scene);
-        drawer4.actionManager.registerAction(
-            new ExecuteCodeAction(
-                {
-                    trigger: ActionManager.OnPickTrigger
-                    //parameter: 'r'
-                },
-                function () { World.scene.activeCamera == World.camera ? World.openDrawer(4) : World.closeDrawer()}
-            )
-        );         
-   
 
 
 
@@ -609,6 +543,79 @@ export default class World {
                 1.0
             )
        )*/
+
+    }
+
+    static setUpDrawers(deskMesh) {
+        var drawer1 = MeshBuilder.CreatePlane("plane1", {height:0.14, width: 0.46, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        drawer1.parent = deskMesh
+        drawer1.position = new Vector3(0.355,0.595,0.30)
+        drawer1.material = new StandardMaterial("", World.scene);
+        drawer1.material.diffuseColor = new Color3.Green();
+
+        drawer1.actionManager = new ActionManager(World.scene);
+        drawer1.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(1) : World.closeDrawer()}
+            )
+        );
+
+  
+
+        var drawer2 = MeshBuilder.CreatePlane("plane2", {height:0.14, width: 0.46, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        drawer2.parent = deskMesh
+        drawer2.position = new Vector3(0.355,0.445,0.30)
+        drawer2.material = new StandardMaterial("", World.scene);
+        drawer2.material.diffuseColor = new Color3.Red(); 
+
+
+        drawer2.actionManager = new ActionManager(World.scene);
+        drawer2.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(2) : World.closeDrawer()}
+            )
+        );
+
+        var drawer3 = MeshBuilder.CreatePlane("plane3", {height:0.14, width: 0.46, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        drawer3.parent = deskMesh
+        drawer3.position = new Vector3(0.355,0.295,0.30)
+        drawer3.material = new StandardMaterial("", World.scene);
+        drawer3.material.diffuseColor = new Color3.Blue();
+
+        drawer3.actionManager = new ActionManager(World.scene);
+        drawer3.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(3) : World.closeDrawer()}
+            )
+        );
+
+        var drawer4 = MeshBuilder.CreatePlane("plane4", {height:0.14, width: 0.46, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        drawer4.parent = deskMesh
+        drawer4.position = new Vector3(0.355,0.15,0.30)
+        drawer4.material = new StandardMaterial("", World.scene);
+        drawer4.material.diffuseColor = new Color3(0, 206/255, 209/255)
+        drawer4.actionManager = new ActionManager(World.scene);
+        drawer4.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () { World.scene.activeCamera == World.camera ? World.openDrawer(4) : World.closeDrawer()}
+            )
+        );         
 
     }
     
