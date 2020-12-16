@@ -142,6 +142,30 @@ export default class World {
         ground.rotation = new Vector3(Math.PI / 2, 0, 0);
         ground.checkCollisions = true;
 
+        var hallway = MeshBuilder.CreatePlane("hallway", {width: 4, height: 10, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        hallway.position = new Vector3(5,0,15)
+        //hallway.material = new StandardMaterial("", World.scene);
+        //hallway.material.diffuseTexture = new Texture("wood_floor_texture.jpg", World.scene);
+        hallway.rotation = new Vector3(Math.PI / 2, 0, 0);
+        hallway.checkCollisions = true;
+
+
+        var turn = MeshBuilder.CreatePlane("turn", {width: 8, height: 4, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        turn.position = new Vector3(7,0,20)
+        //hallway.material = new StandardMaterial("", World.scene);
+        //hallway.material.diffuseTexture = new Texture("wood_floor_texture.jpg", World.scene);
+        turn.rotation = new Vector3(Math.PI / 2, 0, 0);
+        turn.checkCollisions = true;
+
+
+        var secretRoom = MeshBuilder.CreatePlane("secretRoom", {width: 8, height: 10, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoom.position = new Vector3(15,0,20)
+        //hallway.material = new StandardMaterial("", World.scene);
+        //hallway.material.diffuseTexture = new Texture("wood_floor_texture.jpg", World.scene);
+        secretRoom.rotation = new Vector3(Math.PI / 2, 0, 0);
+        secretRoom.checkCollisions = true;
+
+
     }
 
 
@@ -276,13 +300,23 @@ export default class World {
 
 
     static setupWalls(){
-        var wall1 = MeshBuilder.CreateBox("wall1", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        wall1.checkCollisions = true;
-        wall1.material = new StandardMaterial(""); 
-        wall1.position = new Vector3(0,1,11);
-        wall1.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
+        var wall1Left = MeshBuilder.CreateBox("wall1Left", {width: 13, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall1Left.checkCollisions = true;
+        wall1Left.material = new StandardMaterial(""); 
+        wall1Left.position = new Vector3(-3.5,1,11);
+        wall1Left.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
+        var wall1HiddenDoor = MeshBuilder.CreateBox("wall1HiddenDoor", {width: 4, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall1HiddenDoor.checkCollisions = true;
+        wall1HiddenDoor.material = new StandardMaterial(""); 
+        wall1HiddenDoor.position = new Vector3(5,1,11);
+        wall1HiddenDoor.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
 
+        var wall1Right = MeshBuilder.CreateBox("wall1Right", {width: 3, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        wall1Right.checkCollisions = true;
+        wall1Right.material = new StandardMaterial(""); 
+        wall1Right.position = new Vector3(8.5,1,11);
+        wall1Right.material.diffuseTexture = new Texture("office_wall_texture.jpg", World.scene);
         /*var wall2 = MeshBuilder.CreateBox("wall2", {width: 20, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         wall2.checkCollisions = true;
         wall2.position = new Vector3(11,1,0);
@@ -406,6 +440,7 @@ export default class World {
 
         SceneLoader.ImportMesh("","","plant_with_color.babylon", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
+            mesh.position = mesh.position.add(new Vector3(-3,0,-3))
             mesh.scaling = new Vector3(0.4, 0.4, 0.4);
             //mesh.checkCollisions = true;
             //console.log(mesh)
@@ -426,11 +461,11 @@ export default class World {
          SceneLoader.ImportMesh("","","bookshelfFrida.babylon", World.scene, function(newMeshes){
             console.log(newMeshes)
             newMeshes.forEach((mesh) => {
-            mesh.parent = wall1
+            mesh.parent = wall1Left
 
             mesh.scaling = new Vector3(0.45, 0.45, 0.45);
             mesh.rotation = new Vector3(Tools.ToRadians(-90),Tools.ToRadians(180),0);
-            mesh.position = mesh.position.add(new Vector3(6,1,-2))
+            mesh.position = mesh.position.add(new Vector3(8,1,-2))
             //mesh.checkCollisions = true;
             //console.log(mesh)
             //mesh.showBoundingBox = true
@@ -443,7 +478,7 @@ export default class World {
             box.isVisible = false;   
             box.parent =  newMeshes[0];
             box.checkCollisions = true;
-            World.setUpBooks(newMeshes[0])
+            World.setUpBooks(newMeshes[0], wall1HiddenDoor)
 
 
 
@@ -493,7 +528,7 @@ export default class World {
 
          })
 
-        SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
+        /*SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
             mesh.parent = wall1
             mesh.position = mesh.position.add(new Vector3(-2,2,-1))
@@ -501,7 +536,7 @@ export default class World {
             mesh.scaling = new Vector3(3.5, 3.5, 3.5)
             })
 
-         })
+         })*/
 
 
 
@@ -548,7 +583,7 @@ export default class World {
 
     }
 
-    static clickBook(bookNumber){
+    static clickBook(bookNumber,wall1HiddenDoor){
         if(bookNumber === 1){
             World.booksClicked = 1
         }
@@ -557,13 +592,17 @@ export default class World {
             //make sound effect
         }
         if(World.booksClicked === 4){
+            wall1HiddenDoor.dispose()
             //open wall
         }
-        console.log(World.booksClicked)
 
     }
 
-    static setUpBooks(bookShelfMesh){
+    static setUpBooks(bookShelfMesh,wall1HiddenDoor){
+
+        var mat = new StandardMaterial("invisible", World.scene);
+        mat.alpha = 0;
+
         var book1 = MeshBuilder.CreatePlane("book1", {height:0.9, width: 0.14, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
         book1.parent = bookShelfMesh
         //book1.position = new Vector3(0.355,0.595,0.30)
@@ -571,6 +610,7 @@ export default class World {
         book1.rotation = new Vector3(Tools.ToRadians(90),0,0);
         book1.material = new StandardMaterial("", World.scene);
         book1.material.diffuseColor = new Color3.Green();
+        book1.material = mat;
 
         book1.actionManager = new ActionManager(World.scene);
         book1.actionManager.registerAction(
@@ -579,7 +619,7 @@ export default class World {
                     trigger: ActionManager.OnPickTrigger
                     //parameter: 'r'
                 },
-                function () {World.clickBook(1) }
+                function () {World.clickBook(3,wall1HiddenDoor) }
             )
         );
 
@@ -590,6 +630,9 @@ export default class World {
         book2.rotation = new Vector3(Tools.ToRadians(90),0,0);
         book2.material = new StandardMaterial("", World.scene);
         book2.material.diffuseColor = new Color3.Red();
+        book2.material = mat;
+        //book2.isVisible = false
+
 
         book2.actionManager = new ActionManager(World.scene);
         book2.actionManager.registerAction(
@@ -598,7 +641,7 @@ export default class World {
                     trigger: ActionManager.OnPickTrigger
                     //parameter: 'r'
                 },
-                function () {World.clickBook(2) }
+                function () {World.clickBook(4,wall1HiddenDoor) }
             )
         );
 
@@ -609,6 +652,9 @@ export default class World {
         book3.rotation = new Vector3(Tools.ToRadians(90),0,0);
         book3.material = new StandardMaterial("", World.scene);
         book3.material.diffuseColor = new Color3.Blue();
+        book3.material = mat;
+        //book3.isVisible = false
+
 
         book3.actionManager = new ActionManager(World.scene);
         book3.actionManager.registerAction(
@@ -617,7 +663,7 @@ export default class World {
                     trigger: ActionManager.OnPickTrigger
                     //parameter: 'r'
                 },
-                function () {World.clickBook(3) }
+                function () {World.clickBook(1,wall1HiddenDoor) }
             )
         );
 
@@ -628,6 +674,8 @@ export default class World {
         book4.rotation = new Vector3(Tools.ToRadians(90),0,0);
         book4.material = new StandardMaterial("", World.scene);
         book4.material.diffuseColor = new Color3(0, 206/255, 209/255)
+        book4.material = mat;
+        //book4.isVisible = false
 
         book4.actionManager = new ActionManager(World.scene);
         book4.actionManager.registerAction(
@@ -636,7 +684,7 @@ export default class World {
                     trigger: ActionManager.OnPickTrigger
                     //parameter: 'r'
                 },
-                function () {World.clickBook(4) }
+                function () {World.clickBook(2,wall1HiddenDoor) }
             )
         );
     }
