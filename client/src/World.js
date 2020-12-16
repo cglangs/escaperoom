@@ -39,6 +39,7 @@ export default class World {
         World.canvas = document.getElementById("canvas");
         var engine = new Engine(World.canvas, true);
         //World.is_loaded = false
+        World.booksClicked = 0;
 
         
         World.scene = new Scene(engine);
@@ -117,7 +118,7 @@ export default class World {
         World.scene.activeCamera = World.camera
         World.camera.checkCollisions = true;
         World.camera.applyGravity = true;
-        World.camera.ellipsoid = new Vector3(1.0, 1.0, 1.0);
+        World.camera.ellipsoid = new Vector3(1.1, 1, 1.1);
         World.camera.speed = 0.1
         World.camera.keysUp.push(87);
         World.camera.keysDown.push(83)
@@ -157,16 +158,16 @@ export default class World {
         let boxColor
         switch (drawerNumber) {
           case 1:
-            boxColor =  new Color3.Green()
+            boxColor =  new Color3.Blue() 
             break;
           case 2:
-            boxColor =  new Color3.Red()
+            boxColor =  new Color3(0, 206/255, 209/255)
             break;
           case 3:
-            boxColor = new Color3.Blue()
+            boxColor = new Color3.Green()
             break;
           case 4:
-            boxColor = new Color3(0, 206/255, 209/255)
+            boxColor = new Color3.Red()
             break;
 
         }
@@ -442,6 +443,7 @@ export default class World {
             box.isVisible = false;   
             box.parent =  newMeshes[0];
             box.checkCollisions = true;
+            World.setUpBooks(newMeshes[0])
 
 
 
@@ -544,6 +546,99 @@ export default class World {
             )
        )*/
 
+    }
+
+    static clickBook(bookNumber){
+        if(bookNumber === 1){
+            World.booksClicked = 1
+        }
+        else if(bookNumber === World.booksClicked + 1){
+            World.booksClicked += 1
+            //make sound effect
+        }
+        if(World.booksClicked === 4){
+            //open wall
+        }
+        console.log(World.booksClicked)
+
+    }
+
+    static setUpBooks(bookShelfMesh){
+        var book1 = MeshBuilder.CreatePlane("book1", {height:0.9, width: 0.14, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        book1.parent = bookShelfMesh
+        //book1.position = new Vector3(0.355,0.595,0.30)
+        book1.position = book1.position.add(new Vector3(3.2,-1.2,-5.2))
+        book1.rotation = new Vector3(Tools.ToRadians(90),0,0);
+        book1.material = new StandardMaterial("", World.scene);
+        book1.material.diffuseColor = new Color3.Green();
+
+        book1.actionManager = new ActionManager(World.scene);
+        book1.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () {World.clickBook(1) }
+            )
+        );
+
+        var book2 = MeshBuilder.CreatePlane("book2", {height:0.9, width: 0.14, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        book2.parent = bookShelfMesh
+        //book1.position = new Vector3(0.355,0.595,0.30)
+        book2.position = book2.position.add(new Vector3(3.04,-1.2,-5.2))
+        book2.rotation = new Vector3(Tools.ToRadians(90),0,0);
+        book2.material = new StandardMaterial("", World.scene);
+        book2.material.diffuseColor = new Color3.Red();
+
+        book2.actionManager = new ActionManager(World.scene);
+        book2.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () {World.clickBook(2) }
+            )
+        );
+
+        var book3 = MeshBuilder.CreatePlane("book3", {height:0.9, width: 0.14, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        book3.parent = bookShelfMesh
+        //book1.position = new Vector3(0.355,0.595,0.30)
+        book3.position = book3.position.add(new Vector3(2.86,-1.2,-5.2))
+        book3.rotation = new Vector3(Tools.ToRadians(90),0,0);
+        book3.material = new StandardMaterial("", World.scene);
+        book3.material.diffuseColor = new Color3.Blue();
+
+        book3.actionManager = new ActionManager(World.scene);
+        book3.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () {World.clickBook(3) }
+            )
+        );
+
+        var book4 = MeshBuilder.CreatePlane("book4", {height:0.9, width: 0.14, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
+        book4.parent = bookShelfMesh
+        //book1.position = new Vector3(0.355,0.595,0.30)
+        book4.position = book4.position.add(new Vector3(2.68,-1.2,-5.2))
+        book4.rotation = new Vector3(Tools.ToRadians(90),0,0);
+        book4.material = new StandardMaterial("", World.scene);
+        book4.material.diffuseColor = new Color3(0, 206/255, 209/255)
+
+        book4.actionManager = new ActionManager(World.scene);
+        book4.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnPickTrigger
+                    //parameter: 'r'
+                },
+                function () {World.clickBook(4) }
+            )
+        );
     }
 
     static setUpDrawers(deskMesh) {
