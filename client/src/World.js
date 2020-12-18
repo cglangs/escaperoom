@@ -5,7 +5,7 @@ import 'babylonjs-loaders';
 //import BoomBox from './BoomBox'
 import * as GUI from '@babylonjs/gui'
 import IO from './IO'
-import {DefaultLoadingScreen,  Vector4,ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
+import {DefaultLoadingScreen, DynamicTexture, Vector4,ExecuteCodeAction,SetValueAction,InterpolateValueAction,SceneLoader, FreeCamera,ArcRotateCamera, ActionManager, UniversalCamera,Color3, Vector3, StandardMaterial,HemisphericLight,DirectionalLight,PointLight, Texture, MeshBuilder, Engine, Scene, Mesh, Tools} from '@babylonjs/core';
 
 
 DefaultLoadingScreen.prototype.displayLoadingUI = function () {
@@ -180,19 +180,23 @@ export default class World {
         currentDrawer.material = new StandardMaterial("", World.scene);
         currentDrawer.material.diffuseTexture = new Texture("desk_texture.png", World.scene);
         currentDrawer.layerMask = 0x10000000;
-        let boxColor
+        let boxColor, drawerText
         switch (drawerNumber) {
           case 1:
             boxColor =  new Color3.Blue() 
+            drawerText = "I"
             break;
           case 2:
             boxColor =  new Color3(0, 206/255, 209/255)
+            drawerText = "II"
             break;
           case 3:
             boxColor = new Color3.Green()
+            drawerText = "III"
             break;
           case 4:
             boxColor = new Color3.Red()
+            drawerText = "IV"
             break;
 
         }
@@ -203,6 +207,19 @@ export default class World {
         box.material.diffuseColor = boxColor;
         box.parent =  currentDrawer
         box.layerMask = 0x10000000;
+
+
+        var drawerLabel = MeshBuilder.CreatePlane("drawerLabel", {width: 1, height: 1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        drawerLabel.position.y = -0.001;
+        drawerLabel.material = new StandardMaterial("", World.scene);
+        drawerLabel.material.diffuseTexture = new DynamicTexture("dynamic texture", {width:512, height:256}, World.scene); 
+        drawerLabel.material.diffuseTexture.drawText(drawerText, 100, 100, "bold 70px Segoe UI", "black", "transparent", true, true);
+        drawerLabel.material.diffuseTexture.hasAlpha = true;
+        drawerLabel.rotation = new Vector3(Tools.ToRadians(90),0,0);
+        drawerLabel.parent =  currentDrawer
+        drawerLabel.layerMask = 0x10000000;
+
+
 
 
 
@@ -749,7 +766,6 @@ export default class World {
                 function () { World.scene.activeCamera == World.camera ? World.openDrawer(1) : World.closeDrawer()}
             )
         );
-
   
 
         var drawer2 = MeshBuilder.CreatePlane("plane2", {height:0.14, width: 0.46, sideOrientation: Mesh.DOUBLESIDE}, World.scene)
