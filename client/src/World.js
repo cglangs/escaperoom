@@ -112,8 +112,8 @@ export default class World {
         //var lookAt = Vector3.Zero();
         //lookAt.y = Avatar.height + Avatar.height/2;
         //World.camera.setTarget(lookAt);*/
-        //World.camera = new FreeCamera("FreeCamera", new Vector3(-5,2,-5), World.scene);
-        World.camera = new FreeCamera("FreeCamera", new Vector3(15,2,20), World.scene);
+        World.camera = new FreeCamera("FreeCamera", new Vector3(-5,2,-5), World.scene);
+        //World.camera = new FreeCamera("FreeCamera", new Vector3(15,2,20), World.scene);
         World.camera.attachControl(World.canvas, true);
         //World.scene.activeCameras.push(World.camera);
         World.scene.activeCamera = World.camera
@@ -435,7 +435,7 @@ export default class World {
 
         var hallwayLeft = MeshBuilder.CreateBox("hallwayLeft", {width: 12, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         hallwayLeft.checkCollisions = true;
-        hallwayLeft.position = new Vector3(2,0,16)
+        hallwayLeft.position = new Vector3(2,0,18)
         hallwayLeft.material = new StandardMaterial("");
         hallwayLeft.rotation = new Vector3(0,Tools.ToRadians(90),0);
 
@@ -461,10 +461,11 @@ export default class World {
         secretRoomWall3.position = new Vector3(15,0,15)
         secretRoomWall3.material = new StandardMaterial("");
 
-        var secretRoomWall4 = MeshBuilder.CreateBox("secretRoomWall4", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
-        secretRoomWall3.checkCollisions = true;
-        secretRoomWall3.position = new Vector3(15,0,15)
-        secretRoomWall3.material = new StandardMaterial("");
+        var secretRoomWall4 = MeshBuilder.CreateBox("secretRoomWall4", {width: 7, height: 10, depth: 4, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoomWall4.checkCollisions = true;
+        secretRoomWall4.position = new Vector3(9,0,15.5)
+        secretRoomWall4.material = new StandardMaterial("");
+        secretRoomWall4.rotation = new Vector3(0,Tools.ToRadians(90),0);
 
 
 
