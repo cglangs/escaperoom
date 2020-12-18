@@ -112,7 +112,8 @@ export default class World {
         //var lookAt = Vector3.Zero();
         //lookAt.y = Avatar.height + Avatar.height/2;
         //World.camera.setTarget(lookAt);*/
-        World.camera = new FreeCamera("FreeCamera", new Vector3(-5,2,-5), World.scene);
+        //World.camera = new FreeCamera("FreeCamera", new Vector3(-5,2,-5), World.scene);
+        World.camera = new FreeCamera("FreeCamera", new Vector3(15,2,20), World.scene);
         World.camera.attachControl(World.canvas, true);
         //World.scene.activeCameras.push(World.camera);
         World.scene.activeCamera = World.camera
@@ -432,6 +433,47 @@ export default class World {
         wall4Door.material.diffuseTexture = new Texture("double_door_texture.jpg", World.scene);
 
 
+        var hallwayLeft = MeshBuilder.CreateBox("hallwayLeft", {width: 12, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        hallwayLeft.checkCollisions = true;
+        hallwayLeft.position = new Vector3(2,0,16)
+        hallwayLeft.material = new StandardMaterial("");
+        hallwayLeft.rotation = new Vector3(0,Tools.ToRadians(90),0);
+
+
+        var hallwayTurnLeft = MeshBuilder.CreateBox("hallwayTurnLeft", {width: 8, height: 10, depth: 4, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        hallwayTurnLeft.checkCollisions = true;
+        hallwayTurnLeft.position =  new Vector3(7,0,24)
+        hallwayTurnLeft.material = new StandardMaterial("");
+
+        var secretRoomWall1 = MeshBuilder.CreateBox("secretRoomWall1", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoomWall1.checkCollisions = true;
+        secretRoomWall1.position = new Vector3(15,0,25)
+        secretRoomWall1.material = new StandardMaterial("");
+
+        var secretRoomWall2 = MeshBuilder.CreateBox("secretRoomWall2", {width: 10, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoomWall2.checkCollisions = true;
+        secretRoomWall2.position = new Vector3(20,0,20)
+        secretRoomWall2.material = new StandardMaterial("");
+        secretRoomWall2.rotation = new Vector3(0,Tools.ToRadians(90),0);
+
+        var secretRoomWall3 = MeshBuilder.CreateBox("secretRoomWall3", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoomWall3.checkCollisions = true;
+        secretRoomWall3.position = new Vector3(15,0,15)
+        secretRoomWall3.material = new StandardMaterial("");
+
+        var secretRoomWall4 = MeshBuilder.CreateBox("secretRoomWall4", {width: 8, height: 10, depth: 2, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoomWall3.checkCollisions = true;
+        secretRoomWall3.position = new Vector3(15,0,15)
+        secretRoomWall3.material = new StandardMaterial("");
+
+
+
+        /*var secretRoom = MeshBuilder.CreatePlane("secretRoom", {width: 8, height: 10, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+        secretRoom.position = new Vector3(15,0,20)
+        //hallway.material = new StandardMaterial("", World.scene);
+        //hallway.material.diffuseTexture = new Texture("wood_floor_texture.jpg", World.scene);
+        secretRoom.rotation = new Vector3(Math.PI / 2, 0, 0);
+        secretRoom.checkCollisions = true;*/
 
         var roof = MeshBuilder.CreateBox("roof", {width: 20, height: 2, depth: 20, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         roof.position = new Vector3(0,7,0);
@@ -528,15 +570,15 @@ export default class World {
 
          })
 
-        /*SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
+        SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
-            mesh.parent = wall1
+            mesh.parent = wall1Left
             mesh.position = mesh.position.add(new Vector3(-2,2,-1))
             mesh.rotation = new Vector3(Tools.ToRadians(-90),0,0);
             mesh.scaling = new Vector3(3.5, 3.5, 3.5)
             })
 
-         })*/
+         })
 
 
 
