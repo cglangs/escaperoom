@@ -19,9 +19,9 @@ export default class Billboard {
         this.mesh = MeshBuilder.CreatePlane("billboard", {width: Billboard.width, height: Billboard.height}, World.scene);
         this.mesh.position = Vector3.Zero();
         this.mesh.position.y = Avatar.height - Billboard.height;
-        var advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(this.mesh, 1024, 256);
+        let advancedTexture = GUI.AdvancedDynamicTexture.CreateForMesh(this.mesh, 1024, 256);
         advancedTexture.name = "AvatarBillboard";
-        var containerUI = new GUI.Rectangle("container");
+        let containerUI = new GUI.Rectangle("container");
         containerUI.thickness = 0;
         containerUI.height = "100px";
         containerUI.width = "800px";

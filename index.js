@@ -14,7 +14,7 @@ app.get('*', (req, res) => {
 
 var corsOptions = {
   origin: 'http://localhost:3000',
-  credentials: true // <-- REQUIRED backend setting
+  credentials: true 
 };
 
 app.use(cors(corsOptions));

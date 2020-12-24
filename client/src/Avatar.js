@@ -14,65 +14,23 @@ export default class Avatar {
         Avatar.mesh.position = Vector3.Zero();
         Avatar.mesh.position.y = Avatar.height/2;
         Avatar.mesh.isVisible = false
-        //Avatar.mesh.material = new StandardMaterial("matAvatar", World.scene);
-        //Avatar.mesh.material.diffuseColor = new Color3.Green();
         Avatar.username = username;
-        //new BillBoard(Avatar.mesh, Avatar.username);
     }   
-    
-    /*static rotate(isLeft) {
-        //Turning left
-        if (isLeft) {
-            Avatar.absoluteRotation -= Avatar.rotationSpeed;
-            Avatar.mesh.rotate(Axis.Y, Avatar.rotationSpeed, Space.WORLD);
-        //Turning right
-        } else {
-            Avatar.absoluteRotation += Avatar.rotationSpeed;            
-            Avatar.mesh.rotate(Axis.Y, -Avatar.rotationSpeed, Space.WORLD);
-        }
-    }*/
+
     
     static send() {
-        var x = Avatar.mesh.position.x;
-        var y = Avatar.mesh.position.y;
-        var z = Avatar.mesh.position.z;
-        var rotation = Avatar.absoluteRotation;
+        let x = Avatar.mesh.position.x;
+        let y = Avatar.mesh.position.y;
+        let z = Avatar.mesh.position.z;
+        let rotation = Avatar.absoluteRotation;
         IO.socket.emit('transform', {command: "playerMoved",  x, y, z, rotation})
     }   
     
     static update(position, cameraRotation) {
         if (Avatar.mesh !== null) {
-            //console.log(position)
             Avatar.mesh.position = position
             Avatar.absoluteRotation += cameraRotation.y
-            //console.log(rotation)
-            //console.log(cameraRotation)
-            //console.log(cameraDirection)
             Avatar.send();
-
-
-            //Moving forward
-            /*if (Input.key.up) {
-        		const forward = new Vector3(Avatar.walkSpeed * Math.cos(Avatar.absoluteRotation), 0, Avatar.walkSpeed * Math.sin(Avatar.absoluteRotation));
-                Avatar.mesh.moveWithCollisions(forward);
-
-                Avatar.send();
-
-            } else if(Input.key.down){
-                const backward = new Vector3(Avatar.walkSpeed * ( -1 * Math.cos(Avatar.absoluteRotation)), 0, Avatar.walkSpeed * ( -1 * Math.sin(Avatar.absoluteRotation)));
-
-                Avatar.mesh.moveWithCollisions(backward);
-                Avatar.send();
-            }
-            //Turning left
-            if (Input.key.left) {
-                Avatar.rotate(false);
-                Avatar.send();
-            //Turning right
-            } else if (Input.key.right) {
-                Avatar.rotate(true);
-                Avatar.send();
-            }*/
         }
     }
 }

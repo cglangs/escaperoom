@@ -12,11 +12,11 @@ export default class IO {
     static init() {
             IO.currentRoomId = null
             console.log(process.env.NODE_ENV)
-            //if(process.env.NODE_ENV === 'development'){
-                //IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})                
-            //} else{
+            if(process.env.NODE_ENV === 'development'){
+                IO.socket = io("http://localhost:3001/", {reconnectionDelayMax: 10000})                
+            } else{
                 IO.socket=io()                
-            //}
+            }
 
             IO.socket.on("auth", function(data){
                 if(data.success){
@@ -30,7 +30,6 @@ export default class IO {
 
                 else {
                     console.log("THAT ROOM DOESN'T EXIST")
-
                 }
             })
 
@@ -51,21 +50,6 @@ export default class IO {
                 World.roomModification(data.actionCode)
             })
 
-            /*IO.socket.on("all users", users => {
-                const peers = [];
-                users.forEach(userID => {
-                    const peer = createPeer(userID, socketRef.current.id, stream);
-                    peersRef.current.push({
-                        peerID: userID,
-                        peer,
-                    })
-                    peers.push(peer);
-                })
-                setPeers(peers);
-            })*/
-
-
-
         }
 
      static login (username, roomId) {
@@ -74,23 +58,6 @@ export default class IO {
 
 }
 
-        /*Socket.ws.onmessage = (msg) => {
-            switch(msg.data) {
-                case "playerGone":
-                    Player.remove(json.data);
-                    break;
-                case "playerMoved":
-                    Player.move(json.data);
-                    break;
-            }
-        };*/
 
-        /*Socket.ws.onclose = () => {
-            alert("Connection closed");
-        };
-        Socket.ws.onerror = (e) => {
-            console.log("Error");
-        };
-    }*/
 
 

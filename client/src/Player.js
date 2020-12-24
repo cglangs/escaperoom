@@ -6,7 +6,7 @@ import BillBoard from './BillBoard'
 export default class Player {
     
     constructor(id, username) {
-        var height = 3;
+        let height = 3;
         this.id = id;
         this.mesh = MeshBuilder.CreateBox("avatar", {height: height, width: 1, depth: 1}, World.scene);
         this.mesh.position = Vector3.Zero();
@@ -27,7 +27,7 @@ export default class Player {
     //Find existing player or create if not exists
     static find(playerID, username) {       
         //Check if player is in our list
-        for (var objPlayer of Player.all) {
+        for (let objPlayer of Player.all) {
             if (objPlayer.id === playerID) {
                 //Found player, so lets return it
                 return(objPlayer);
@@ -46,14 +46,14 @@ export default class Player {
     //Find player and move them
     static move(data) {
    
-        var playerID = parseInt(data.id);
-        var objPlayer = Player.find(playerID, data.username);
+        let playerID = parseInt(data.id);
+        let objPlayer = Player.find(playerID, data.username);
         objPlayer.transform(data.x, data.y, data.z, data.rotation);
     }
     
     //Remove player from world
     static remove(data) {
-        for (var objPlayer of Player.all) {
+        for (let objPlayer of Player.all) {
             if (objPlayer.id === data.id) {
                 objPlayer.destroy();
                 break;
