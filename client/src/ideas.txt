@@ -1,10 +1,10 @@
-        var columns = 6;  // 6 columns
-        var rows = 4;  // 4 rows
+        let columns = 6;  // 6 columns
+        let rows = 4;  // 4 rows
 
-        var faceUV = new Array(6);
+        let faceUV = new Array(6);
 
         //set all values to zero
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             faceUV[i] = new Vector4(0, 0, 0, 0);
         }
 
@@ -12,14 +12,14 @@
         faceUV[0] = new Vector4(1,1,0,0);
 
 
-      var options = {
+      let options = {
         width: 1.5,
         height: 2,
         depth: 1,
         faceUV: faceUV
         };
 
-        var safe = MeshBuilder.CreateBox("mySafe", options, World.scene);
+        let safe = MeshBuilder.CreateBox("mySafe", options, World.scene);
         safe.position = new Vector3(5,2,-5)
         safe.material = new StandardMaterial("safeMat", World.scene);
         safe.material.diffuseTexture = new Texture("safe_texture.png", World.scene);

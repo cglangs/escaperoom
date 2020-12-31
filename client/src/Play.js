@@ -5,10 +5,6 @@ import './App.css';
 import Peer from "simple-peer";
 import { useParams } from "react-router";
 
-
-
-
-
 IO.init()
 
 

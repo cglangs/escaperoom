@@ -521,7 +521,6 @@ export default class World {
 
         SceneLoader.ImportMesh("","","clock.glb", World.scene, function(newMeshes){
             newMeshes.forEach((mesh) => {
-            console.log(mesh)
             mesh.parent = wall1Left
             mesh.position = mesh.position.add(new Vector3(-2,2,-1))
             mesh.rotation = new Vector3(Tools.ToRadians(-90),0,0);
@@ -529,6 +528,31 @@ export default class World {
             })
 
          })
+
+        SceneLoader.ImportMesh("","","Clock1.babylon", World.scene, function(newMeshes){
+            /*const clockRadius = 0.85;
+            const clockPath = [
+                new Vector3(0.0, 0.0, 0.0),
+                new Vector3(0.0, 0.01, 0.0)
+            ];*/
+            newMeshes.forEach((mesh) => {
+            mesh.parent = wall3
+            mesh.position = mesh.position.add(new Vector3(2,2,1))
+            mesh.rotation = new Vector3(Tools.ToRadians(90),0,0);
+            mesh.scaling = new Vector3(0.6, 0.6, 0.6)
+            //let clockFace = MeshBuilder.CreateTube("box", {path: clockPath, tessellation:100, cap: 1, radius: clockRadius, sideOrientation: Mesh.DOUBLESIDE, updatable: true}, World.scene);
+            let clockFace = MeshBuilder.CreatePlane("clockFace", {width: 1.65, height: 1.65, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
+            clockFace.position = clockFace.position.add(new Vector3(0,0.2,0))
+            clockFace.rotation = new Vector3(Tools.ToRadians(90),0,Tools.ToRadians(180));
+            clockFace.parent = mesh
+            clockFace.material = new StandardMaterial("");
+            clockFace.material.diffuseTexture = new Texture("oldclocktexture.png", World.scene);
+            clockFace.material.diffuseTexture.hasAlpha = true;
+            })
+
+         })
+
+
 
         let clockLabel = MeshBuilder.CreatePlane("clockLabel", {width: 1, height: 1, sideOrientation: Mesh.DOUBLESIDE}, World.scene);
         clockLabel.parent = wall1Left
