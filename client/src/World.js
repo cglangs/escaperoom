@@ -79,7 +79,9 @@ export default class World {
             World.scene.getMeshByName("safeFront").dispose()
             World.scene.getMeshByName("safeFrontBorder").dispose()
             break;
-
+          case 2:
+              World.scene.getMeshByName("wall1HiddenDoor").dispose();
+              break;
         }
 
 
@@ -470,7 +472,6 @@ export default class World {
         })
 
          SceneLoader.ImportMesh("","","bookshelfFrida.babylon", World.scene, function(newMeshes){
-            console.log(newMeshes)
             newMeshes.forEach((mesh) => {
             mesh.parent = wall1Left
 
@@ -581,6 +582,7 @@ export default class World {
         }
         if(World.booksClicked === 4){
             wall1HiddenDoor.dispose()
+            IO.socket.emit('room modified', {actionCode: 2})
         }
 
     }
